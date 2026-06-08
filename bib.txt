@@ -1,0 +1,6 @@
+@article{ding2025kling-avatar,
+  title={Kling-Avatar: Grounding Multimodal Instructions for Cascaded Long-Duration Avatar Animation Synthesis},
+  author={Ding, Yikang and Liu, Jiwen and Zhang, Wenyuan and Wang, Zekun and Hu, Wentao and Cui, Liyuan and Lao, Mingming and Shao, Yingchao and Liu, Hui and Li, Xiaohan and Chen, Ming and Liu, Xiaoqiang and Liu, Yu-shen and Wan Pengfei},
+  journal={arXiv preprint arXiv:2509.09595},
+  year={2025}
+}
