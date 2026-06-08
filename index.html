@@ -444,11 +444,26 @@
             z-index: 1;
             box-shadow: 0 0 32px rgba(0,0,0,0.8);
         }
+    
+        /* Hide all video controls and loading spinners */
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-enclosure { display: none !important; }
+        video::-webkit-media-controls-panel { display: none !important; }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
 </head>
 <body>
+
+    <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #17181a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <img src="image/logo.png" alt="Logo" style="height: 60px; margin-bottom: 20px;" />
+        <h2 style="color: white; margin-bottom: 20px; font-weight: 300;">Private Debug Mode</h2>
+        <input type="password" id="password-input" placeholder="Enter password" style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #333; margin-bottom: 10px; background: #222; color: #fff; width: 250px; text-align: center; outline: none;">
+        <button id="password-submit" style="padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; background: #fff; color: #000; border: none; font-weight: bold; width: 250px; transition: background 0.3s;">Verify</button>
+        <p id="password-error" style="color: #ff5252; display: none; margin-top: 10px;">Incorrect password</p>
+    </div>
+
 
         <!-- <div class="nav-container" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1001; text-align: center;">
             <button id="nav-button" class="nav-button"  style="border: 2px solid #000; padding: 10px 20px; text-align: center; display: inline-block;">
@@ -468,7 +483,13 @@
         </div> -->
 
         <!-- <a href="#core-capabilities" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Core Capabilities</a>            <a href="#context-aware-audio-driven-animation" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Audio-Driven Animation</a>            <a href="#text-guided-multimodal-animation" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Multimodal Animation</a>            <a href="#cinematic-performances" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Cinematic Performances</a>            <a href="#rhythmic-performances" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Rhythmic Performances</a>            <a href="#diversity-and-robustness" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Diversity</a>            <a href="#multi-person-scene-performance" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Multi-Person Scene</a> -->
-        <div class="side-nav" style="position: fixed; top: 20px; left: 50%; transform: translateX(-55%); z-index: 1000; display: flex; flex-direction: row; gap: 20px; padding: 12px;">                    </div>        <style>            .nav-link:hover {                opacity: 1;            }            @media (max-width: 768px) {                .side-nav {                    left: 10px;                }                .nav-link {                    font-size: 12px;                }            }            @media (max-width: 512px) {                .side-nav {                    display: none;                }            }        </style>        <script>
+        <div class="side-nav" style="position: fixed; top: 20px; left: 50%; transform: translateX(-55%); z-index: 1000; display: flex; flex-direction: row; gap: 20px; padding: 12px;">                    </div>        <style>            .nav-link:hover {                opacity: 1;            }            @media (max-width: 768px) {                .side-nav {                    left: 10px;                }                .nav-link {                    font-size: 12px;                }            }            @media (max-width: 512px) {                .side-nav {                    display: none;                }            }        
+        /* Hide all video controls and loading spinners */
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-enclosure { display: none !important; }
+        video::-webkit-media-controls-panel { display: none !important; }
+
+    </style>        <script>
             // 下拉菜单交互功能
             document.addEventListener('DOMContentLoaded', function() {
                 const navButton = document.getElementById('nav-button');
@@ -520,9 +541,15 @@
             display: none !important;
         }
         /* 鼠标悬停时显示控件 */
-        .prompt-wrap:hover video::-webkit-media-controls {
+        .prompt-wrap:hover_disabled video::-webkit-media-controls {
             display: flex !important;
         }
+    
+        /* Hide all video controls and loading spinners */
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-enclosure { display: none !important; }
+        video::-webkit-media-controls-panel { display: none !important; }
+
     </style>
     <div id="intro">
         <div class="content">
@@ -610,7 +637,13 @@
                     background-color: #555; /* 鼠标移上去时变灰 */
                     color: #fff;
                 }
-                </style>
+                
+        /* Hide all video controls and loading spinners */
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-enclosure { display: none !important; }
+        video::-webkit-media-controls-panel { display: none !important; }
+
+    </style>
 
 <script>
   const navBtn = document.getElementById("nav-button-research");
@@ -637,106 +670,106 @@
         <div class="title">Scene Generalization</div>
         <div class="masonry">
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot184.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot184.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot184.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot184.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot56%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot56%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot56%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot56%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot258.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot258.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot258.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot258.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot282.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot282.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot282.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot282.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot295.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot295.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot307.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot307.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot307.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot307.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot312.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot312.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot312.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot312.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot313.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot313.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot343.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot343.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot385.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot385.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot385.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot385.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot393.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot393.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot393.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot393.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot494.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot494.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.mp4"></video>
             </div>
         </div>
     </section>
@@ -745,64 +778,64 @@
         <div class="title">Multi Shot</div>
         <div class="masonry">
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/33401586079.jpg" src="camera/multi_shot/33401586079.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/33401586079.jpg" src="camera/multi_shot/33401586079.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/4105392481.jpg" src="camera/multi_shot/4105392481.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/4105392481.jpg" src="camera/multi_shot/4105392481.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot100%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot100%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot100%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot100%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot131%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot131%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot131%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot131%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot157.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot157.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot157.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot157.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot196.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot196.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot196.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot196.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot47.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot47.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot47.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot47.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.mp4"></video>
             </div>
         </div>
     </section>
@@ -811,46 +844,46 @@
         <div class="title">Dynamic Motion</div>
         <div class="masonry">
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.mp4"></video>
             </div>
         </div>
     </section>
@@ -859,49 +892,49 @@
         <div class="title">Special Camera Movement</div>
         <div class="masonry">
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.mp4"></video>
             </div>
             <div class="prompt-wrap audio-control">
-                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.mp4"></video>
+                <video playsinline loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.mp4"></video>
             </div>
         </div>
     </section>
@@ -910,7 +943,7 @@
     <section id="Pipeline">
     <div class="title">Pipeline</div>
         <div style="text-align: center; margin-top: 20px;">
-        <img src="image/overall.png"
+        <img src="image/overall.png?v=2"
             alt="Pipeline"
             style="width: auto; max-width: 95%; height: auto; border-radius: 8px; display: inline-block;" />
         </div>
@@ -954,26 +987,47 @@
         const videos = document.querySelectorAll('.audio-control video');
 
         
+        
+        // Password Protection
+        const overlay = document.getElementById('password-overlay');
+        const passInput = document.getElementById('password-input');
+        const passSubmit = document.getElementById('password-submit');
+        const passError = document.getElementById('password-error');
+
+        function checkPassword() {
+            if (passInput.value === 'klingcamera') {
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                passError.style.display = 'block';
+            }
+        }
+
+        if (overlay) {
+            passSubmit.addEventListener('click', checkPassword);
+            passInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkPassword();
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Hover to play paradigm
         videos.forEach(video => {
-            // Hover to preload for instant playback
             const parent = video.parentElement;
             
             parent.addEventListener('mouseenter', () => {
-                if (video.preload !== 'auto') {
-                    video.preload = 'auto';
+                video.preload = 'auto';
+                let playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {});
                 }
             });
 
-            
-
-            const onClick = function() {
-            video.play();
-            // 播放后解绑点击，不再干扰用户
-            parent.removeEventListener('click', onClick);
-            };
-
-            parent.addEventListener('click', onClick);
-        });
+            parent.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+                video.load(); // This stops the current buffer and resets to poster
+            });
         });
     </script>
 
