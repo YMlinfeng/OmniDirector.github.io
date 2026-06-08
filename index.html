@@ -500,16 +500,19 @@
                 const navButton = document.getElementById('nav-button');
                 const dropdownMenu = document.getElementById('dropdown-menu');
 
-                navButton.addEventListener('click', function() {
-                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-                });
+                // 加上判空条件，防止找不到元素时报错阻断脚本
+                if (navButton && dropdownMenu) { 
+                    navButton.addEventListener('click', function() {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                    });
 
-                // 点击其他地方关闭下拉菜单
-                document.addEventListener('click', function(event) {
-                    if (!navButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                        dropdownMenu.style.display = 'none';
-                    }
-                });
+                    // 点击其他地方关闭下拉菜单
+                    document.addEventListener('click', function(event) {
+                        if (!navButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                            dropdownMenu.style.display = 'none';
+                        }
+                    });
+                }
 
                 // 导航链接悬停效果
                 const navLinks = document.querySelectorAll('.nav-link');
@@ -987,12 +990,10 @@
 </section>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<script>
+        // 去掉了 document.addEventListener('DOMContentLoaded', function() { 
         const videos = document.querySelectorAll('.audio-control video');
 
-        
-        
         // Password Protection
         const overlay = document.getElementById('password-overlay');
         const passInput = document.getElementById('password-input');
@@ -1031,11 +1032,10 @@
             parent.addEventListener('mouseleave', () => {
                 video.pause();
                 video.currentTime = 0;
-                video.load(); // This stops the current buffer and resets to poster
+                video.load(); 
             });
         });
-        });
+        // 删掉了结尾多余的 }); 
     </script>
-
 </body>
 </html>
