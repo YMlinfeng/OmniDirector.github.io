@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon">
     
     <style>
-        /* ================== 原有基础样式 100% 保留 ================== */
+        /* ================== 原有样式 100% 保留 ================== */
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background-color: #666; }
@@ -57,8 +57,7 @@
         #intro strong { font-weight: 700; }
         #intro h2 strong { color: #fff; }
 
-        /* [调参区：拓宽了全局网页的最大宽度，从 1100px -> 1250px，给轮播图更多空间] */
-        section { max-width: 1250px !important; padding: 0 20px; margin: 0 auto; margin-top: 100px; }
+        section { margin: 0 auto; margin-top: 100px; }
         section:first-of-type { margin-top: 0; }
         .content { padding: 0 10%; }
         .content p { color: #999 !important; }
@@ -77,7 +76,10 @@
             font-weight: 600; z-index: 1000; min-height: 60px; box-sizing: border-box; margin-bottom: 30px;
         }
         .description { padding: 0 0 20px; color: rgb(210, 209, 209); font-size: 20px; line-height: 1.7; font-weight: 300; }
+        .highlight { color: #fff; font-weight: 500; }
 
+        .prompt { max-width: calc(100% - 20px); position: absolute; background: #00000080; color: #ffffffe6; font-size: 10px; backdrop-filter: blur(10px); bottom: 10px; left: 10px; padding: 5px 10px; border-radius: 15px; opacity: 0; pointer-events: none; transition: opacity .5s; box-sizing: border-box; }
+        
         #footer { background: linear-gradient(transparent, #000 100px); padding-top: 100px; box-sizing: content-box; z-index: 10000; position: relative; }
         #footer #links { position: absolute; bottom: 16px; width: 100%; height: 50px; margin-top: 80px; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0; }
         #footer #links[visible] { transition: opacity .5s; transition-delay: .5s; opacity: 1; }
@@ -87,11 +89,11 @@
         #contributors a { display: block; padding: 3px 20px; border-radius: 100px; background-color: #000; transition: background-color .2s; text-decoration: none; color: #fff; }
         
         @media (hover: hover) {
+            .prompt-wrap:hover .prompt, .full-screen-wrap:hover .full-screen-button { opacity: 1; pointer-events: all; }
             #contributors a:hover { background: #222; }
             tbody tr:hover { background: #222; }
         }
 
-        /* 视频控件及交互 */
         @media (min-width: 640px) {
             body[muted=false] .audio-control:hover { transform: scale(1.05); z-index: 1; box-shadow: 0 0 32px rgba(0,0,0,0.8); }
         }
@@ -103,75 +105,56 @@
         .prompt-wrap video::-webkit-media-controls { display: none !important; }
         .prompt-wrap:hover video::-webkit-media-controls { display: flex !important; }
 
+        /* ================== 新增核心修改：排版限宽与拉长策略 ================== */
 
-        /* ================== 新增核心修改：排版与 3D 轮播组件 ================== */
+        /* 强制网页内容处于中心，避免超宽屏幕横向拉伸过大，同时美化视觉 */
+        section { max-width: 1100px !important; padding: 0 20px; }
 
+        /* 1. 顶部说明文案，缓冲用户视线 */
         .category-desc {
-            font-size: 1.15rem; line-height: 1.8; color: #d1d1d1;
-            margin-bottom: 20px; padding: 20px 30px;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #d1d1d1;
+            margin-bottom: 40px;
+            padding: 20px 30px;
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px; border-left: 4px solid #74ff52;
-        }
-
-        /* --- 3D Carousel (横向循环轮播) 样式 --- */
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            /* [调参区：放大了轮播图整体容器高度限制] */
-            height: 35vh; 
-            min-height: 300px; 
-            max-height: 450px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 40px auto 80px;
-            user-select: none; /* 防止拖拽时选中文字 */
-        }
-        .carousel-item {
-            position: absolute;
-            /* [调参区：中心放大显示的视频宽度，调大此数值可让居中视频更大] */
-            width: 60%; 
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            background: #000;
-            will-change: transform, opacity, filter;
+            border-left: 4px solid #74ff52;
         }
 
-        /* 轮播的三种核心状态 */
-        .carousel-item.pos-left {
-            /* [调参区：左侧视频的偏移量 (-55%) 和 缩放大小 (0.85)，调小 scale 可让其更小] */
-            transform: translateX(-55%) scale(0.85); 
-            opacity: 0.4;
-            z-index: 1;
-            /* [调参区：边缘视频变灰的亮度，越小越黑] */
-            filter: brightness(0.85); 
-            cursor: pointer;
+        /* 2. 纵向滚动的代表案例区 (强制一个屏幕只显示一个视频) */
+        .vertical-cases {
+            display: flex;
+            flex-direction: column;
+            gap: 25vh; /* 极限拉大间距，用户必须滚动很长才能看到下一个 */
+            margin-bottom: 10vh;
         }
-        .carousel-item.pos-right {
-            /* [调参区：右侧视频的偏移量 (55%) 和 缩放大小 (0.85)] */
-            transform: translateX(55%) scale(0.85); 
-            opacity: 0.4;
-            z-index: 1;
-            filter: brightness(0.85); 
-            cursor: pointer;
-        }
-        .carousel-item.pos-center {
-            transform: translateX(0) scale(1); /* 居中放大 */
-            opacity: 1;
-            z-index: 3;
-            filter: brightness(1); /* 恢复亮度 */
+        .vertical-case-item {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
         }
 
-        /* 防止两边的视频截获点击事件（让点击事件透过视频触发外层容器轮播切换） */
-        .carousel-item.pos-left video, .carousel-item.pos-right video {
-            pointer-events: none;
+        /* 长段落的英文描述文字 */
+        .case-description {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #bbbbbb;
+            background: #1c1d1f;
+            padding: 25px 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .carousel-item.pos-center video {
-            pointer-events: auto; /* 中间的视频可以正常交互和播放 */
-        }
+        
+        /* 文字高亮颜色类 */
+        .hl-green { color: #74ff52; font-weight: 600; }
+        .hl-blue { color: #52a8ff; font-weight: 600; }
+        .hl-yellow { color: #ffeb52; font-weight: 600; }
+        .hl-pink { color: #ff52a8; font-weight: 600; }
 
-        /* --- 两栏瀑布流布局 (用于 Show More) --- */
+        /* 3. 两栏瀑布流布局 (修改原 container 和 column 类，改为 2 列对齐) */
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -179,19 +162,19 @@
             justify-content: space-between;
         }
         .column {
-            width: calc(50% - 10px); /* 瀑布流变更为两列对齐，拉长纵向 */
+            width: calc(50% - 10px); /* 两栏平分宽度 */
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 20px; /* 拉大行间距 */
         }
         @media (max-width: 768px) {
-            .column { width: 100%; }
+            .column { width: 100%; } /* 手机端自动切回单列 */
         }
 
-        /* --- 淡入淡出隐身特效 --- */
+        /* 4. 淡入淡出特效：离开视口时会隐身，制造呼吸感 */
         .fade-in-element {
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(50px);
             transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
             will-change: opacity, transform;
         }
@@ -200,20 +183,32 @@
             transform: translateY(0);
         }
 
+        /* 5. 隐藏类 */
         .hidden-item { display: none !important; }
 
-        /* --- Show More 按钮 --- */
+        /* 6. Show More 按钮样式 */
         .show-more-wrapper {
-            text-align: center; margin: 60px 0 100px 0; width: 100%;
+            text-align: center;
+            margin: 60px 0 100px 0;
+            width: 100%;
         }
         .show-more-btn {
-            background-color: transparent; color: #74ff52; border: 2px solid #74ff52;
-            padding: 14px 45px; font-size: 1.2rem; border-radius: 50px;
-            cursor: pointer; transition: all 0.3s ease; font-family: inherit; font-weight: 600;
+            background-color: transparent;
+            color: #74ff52;
+            border: 2px solid #74ff52;
+            padding: 14px 45px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
         }
         .show-more-btn:hover {
-            background-color: #74ff52; color: #000;
-            transform: scale(1.05); box-shadow: 0 0 25px rgba(116, 255, 82, 0.4);
+            background-color: #74ff52;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(116, 255, 82, 0.4);
         }
 
     </style>
@@ -236,7 +231,7 @@
         <div class="content">
             <div style="text-align: center;">
             <img src="image/logo.png" alt="Kling Logo" style="height: 80px; margin-bottom: 25px;" />
-            <h2 style="font-size: 3.2rem; font-weight: 400; color: #f7fcf9;">
+            <h2 style="font-size: 3.2rem; font-weight: 400;  color: #f7fcf9;  ">
                 OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation
             </h2>
             <div style="margin-top: 30px;"></div>
@@ -283,111 +278,46 @@
 
 
     <!-- ========================================================== -->
-    <!-- 上半部分：优先展示四个大类的 3D 轮播图 (Top Carousel Section) -->
+    <!-- SECTION 1: Scene Generalization -->
     <!-- ========================================================== -->
-
-    <!-- 1. Scene Generalization Carousel -->
-    <section id="Scene-Generalization-Top" style="margin-top: 100px;">
+    <section id="Scene-Generalization">
         <div class="title">Scene Generalization</div>
         <div class="category-desc fade-in-element">
             <strong>[Module Overview]</strong> This section evaluates the model's zero-shot capability to generalize across diverse conceptual scenes. The system inherently adapts to drastic shifts in lighting, texturing, and geometry while enforcing rigorous camera motion constraints.
         </div>
         
-        <div class="carousel-container fade-in-element">
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_multi_shot184.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_multi_shot184.mp4"></video>
+        <!-- 竖向显示的3个核心视频 -->
+        <div class="vertical-cases">
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_multi_shot184.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_multi_shot184.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-green">[Depth of Field Consistency]</span> Notice how the <span class="hl-yellow">focal length</span> realistically simulates physical optics during the motion. The model actively tracks high-frequency textures in the background, preventing <span class="hl-pink">artifacts or texture swimming</span> even under extreme spatial displacement. This exhibits a profound understanding of 3D contextual environments.
+                </div>
             </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.mp4"></video>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-blue">[Dynamic Lighting Adaptation]</span> As the camera smoothly glides around the primary subject, the global illumination and specular reflections seamlessly recalculate in real-time. By leveraging <span class="hl-yellow">spatial-temporal attention</span>, the generative process maintains rigorous geometric volume without breaking the <span class="hl-pink">cinematic mood</span> intended by the director's prompt.
+                </div>
             </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.mp4"></video>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. Multi Shot Carousel -->
-    <section id="Multi-Shot-Top">
-        <div class="title">Multi Shot</div>
-        <div class="category-desc fade-in-element">
-            <strong>[Module Overview]</strong> Maintaining visual coherence across completely different camera angles is a notorious challenge. This module demonstrates the ability to execute sequential jump cuts while perfectly retaining the storyline's logical continuity.
-        </div>
-        
-        <div class="carousel-container fade-in-element">
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/multi_shot/33401586079.jpg" data-src="camera/multi_shot/33401586079.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.mp4"></video>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-green">[Subject Identity Preservation]</span> Generating large-scale movement often distorts human or intricate object anatomy. Here, OmniDirector successfully isolates <span class="hl-blue">camera trajectory parameters</span> from appearance features. The smooth dolly-out maneuver highlights <span class="hl-yellow">unprecedented stability</span>, preserving identity consistency down to the finest micro-details.
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- 3. Dynamic Motion Carousel -->
-    <section id="Dynamic-Motion-Top">
-        <div class="title">Dynamic Motion</div>
-        <div class="category-desc fade-in-element">
-            <strong>[Module Overview]</strong> Dynamic motion breathes Hollywood-level vitality into generated visuals. The model seamlessly translates explicit trajectory constraints into breathtaking pans, tilts, and dolly shots without warping the fundamental geometry.
-        </div>
-        
-        <div class="carousel-container fade-in-element">
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.mp4"></video>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. Special Camera Movement Carousel -->
-    <section id="Special-Camera-Movement-Top">
-        <div class="title">Special Camera Movement</div>
-        <div class="category-desc fade-in-element">
-            <strong>[Module Overview]</strong> Traversing through complex spatial occlusion involves synthesizing parts of the environment that are initially invisible. This section pushes the boundary of 3D geometry hallucination through orbiting and fly-through motions.
-        </div>
-        
-        <div class="carousel-container fade-in-element">
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.mp4"></video>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ========================================================== -->
-    <!-- 中间过渡区：将用户引导至下半部分的探索区 -->
-    <!-- ========================================================== -->
-    <section id="More-Cases-Transition" class="fade-in-element" style="margin-top: 150px; text-align: center; margin-bottom: 50px;">
-        <h2 style="font-size: 3rem; font-weight: 300; color: #fff; margin-bottom: 10px;">More Cases Exploration</h2>
-        <p style="color: #999; font-size: 1.2rem;">Dive deeper into the generated multi-clip results.</p>
-    </section>
-
-
-    <!-- ========================================================== -->
-    <!-- 下半部分：所有的瀑布流与 Show More (Bottom Grid Sections) -->
-    <!-- ========================================================== -->
-
-    <!-- 1. Scene Generalization More -->
-    <section id="Scene-Generalization-More">
-        <div class="title" style="font-size: 24px; color: #ccc;">More: Scene Generalization</div>
+        <!-- 剩下的视频打入两栏结构中 -->
         <div class="container">
             <div class="column col1">
-                <!-- [修改说明] 首行默认展示，移除了 hidden-item 类 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video></div>
-                <!-- 随后隐藏 -->
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot295.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot313.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot393.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot393.mp4"></video></div>
@@ -403,9 +333,7 @@
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot307.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot307.mp4"></video></div>
             </div>
             <div class="column col2">
-                <!-- [修改说明] 首行默认展示，移除了 hidden-item 类 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot343.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video></div>
-                <!-- 随后隐藏 -->
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot343.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot494.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.mp4"></video></div>
@@ -429,13 +357,45 @@
         </div>
     </section>
 
-    <!-- 2. Multi Shot More -->
-    <section id="Multi-Shot-More">
-        <div class="title" style="font-size: 24px; color: #ccc;">More: Multi Shot</div>
+    <!-- ========================================================== -->
+    <!-- SECTION 2: Multi Shot -->
+    <!-- ========================================================== -->
+    <section id="Multi-Shot">
+        <div class="title">Multi Shot</div>
+        <div class="category-desc fade-in-element">
+            <strong>[Module Overview]</strong> Maintaining visual coherence across completely different camera angles is a notorious challenge. This module demonstrates the ability to execute sequential jump cuts while perfectly retaining the storyline's logical continuity.
+        </div>
+        
+        <div class="vertical-cases">
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/multi_shot/33401586079.jpg" data-src="camera/multi_shot/33401586079.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-blue">[Angle Transitioning]</span> A textbook execution of a <span class="hl-pink">hard cut transition</span>. The network seamlessly links a medium wide shot to a tight close-up, verifying that the multi-shot director module properly anchors <span class="hl-yellow">latent object representations</span> between entirely disjointed temporal windows.
+                </div>
+            </div>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-green">[Narrative Framing]</span> By incorporating a cinematic <span class="hl-yellow">blueprint mechanism</span>, the model anticipates the future frame's composition. Observe how the tracking shot smoothly establishes the spatial geometry before <span class="hl-pink">cutting to an alternate viewpoint</span> without breaking the viewer's spatial awareness.
+                </div>
+            </div>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-pink">[Complex Continuity]</span> This shot exemplifies high-level <span class="hl-blue">semantic alignment</span>. Even as the camera switches across the 180-degree axis, lighting sources and character momentum are perfectly inherited. This proves the architecture's scalability when tasked with <span class="hl-yellow">long-form video synthesis</span>.
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="column col1">
-                <!-- [修改说明] 首行默认展示 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.mp4"></video></div>
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.mp4"></video></div>
@@ -444,8 +404,7 @@
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot196.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot196.mp4"></video></div>
             </div>
             <div class="column col2">
-                <!-- [修改说明] 首行默认展示 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot47.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot47.mp4"></video></div>
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot47.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot47.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.mp4"></video></div>
@@ -462,21 +421,52 @@
         </div>
     </section>
 
-    <!-- 3. Dynamic Motion More -->
-    <section id="Dynamic-Motion-More">
-        <div class="title" style="font-size: 24px; color: #ccc;">More: Dynamic Motion</div>
+    <!-- ========================================================== -->
+    <!-- SECTION 3: Dynamic Motion -->
+    <!-- ========================================================== -->
+    <section id="Dynamic-Motion">
+        <div class="title">Dynamic Motion</div>
+        <div class="category-desc fade-in-element">
+            <strong>[Module Overview]</strong> Dynamic motion breathes Hollywood-level vitality into generated visuals. The model seamlessly translates explicit trajectory constraints into breathtaking pans, tilts, and dolly shots without warping the fundamental geometry.
+        </div>
+
+        <div class="vertical-cases">
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-yellow">[Velocity Control]</span> The subtle acceleration and deceleration in this panning sequence highlight the underlying <span class="hl-blue">physics-aware temporal modeling</span>. Instead of a rigid linear shift, the camera motion feels <span class="hl-pink">organic and handheld</span>, deeply enhancing the immersive storytelling experience.
+                </div>
+            </div>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-green">[Parallax Effect Simulation]</span> Notice the differing speeds of the foreground elements relative to the distant background. Generating a mathematically accurate <span class="hl-yellow">multi-plane parallax</span> from a single starting condition proves that our representations are not just 2D stretches, but <span class="hl-blue">robust 3D mappings</span>.
+                </div>
+            </div>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-pink">[Aggressive Dolly Zoom]</span> This is the classic "Vertigo effect" synthesized purely via generative constraints. The model concurrently manages a <span class="hl-yellow">field of view (FOV) alteration</span> while translating the camera position backwards. Keeping the primary subject precisely locked in scale demonstrates unparalleled <span class="hl-green">spatial reasoning</span>.
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="column col1">
-                <!-- [修改说明] 首行默认展示 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video></div>
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.mp4"></video></div>
             </div>
             <div class="column col2">
-                <!-- [修改说明] 首行默认展示 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.mp4"></video></div>
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.mp4"></video></div>
@@ -489,13 +479,45 @@
         </div>
     </section>
 
-    <!-- 4. Special Camera Movement More -->
-    <section id="Special-Camera-Movement-More">
-        <div class="title" style="font-size: 24px; color: #ccc;">More: Special Camera Movement</div>
+    <!-- ========================================================== -->
+    <!-- SECTION 4: Special Camera Movement -->
+    <!-- ========================================================== -->
+    <section id="Special-Camera-Movement">
+        <div class="title">Special Camera Movement</div>
+        <div class="category-desc fade-in-element">
+            <strong>[Module Overview]</strong> Traversing through complex spatial occlusion involves synthesizing parts of the environment that are initially invisible. This section pushes the boundary of 3D geometry hallucination through orbiting and fly-through motions.
+        </div>
+
+        <div class="vertical-cases">
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-pink">[Fly-Through Obstructions]</span> The camera physically <span class="hl-yellow">pierces through foreground elements</span>. To achieve this without glitching, OmniDirector continually generates plausible, physically accurate geometry on-the-fly, essentially creating <span class="hl-blue">unseen architectural data</span> as it moves forward.
+                </div>
+            </div>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-green">[360° Object Orbiting]</span> Executing a smooth <span class="hl-blue">arc shot</span> around a central focal point. Traditional models often flatten or tear textures when exposing the lateral sides of a subject. Here, the temporal network seamlessly infers <span class="hl-yellow">anatomical depth and ambient lighting</span> from previously occluded angles.
+                </div>
+            </div>
+            <div class="vertical-case-item fade-in-element">
+                <div class="prompt-wrap audio-control">
+                    <video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.mp4"></video>
+                </div>
+                <div class="case-description">
+                    <span class="hl-blue">[Extreme Low Angle Sweeps]</span> Initiating from a macro perspective and sweeping upwards creates <span class="hl-pink">drastic perspective distortion</span>. The model elegantly calculates the vanishing points dynamically, ensuring that the background skyscrapers and environment maintain a <span class="hl-green">hyper-realistic scale</span> as the virtual lens tilts.
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="column col1">
-                <!-- [修改说明] 首行默认展示 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video></div>
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.mp4"></video></div>
@@ -503,8 +525,7 @@
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.mp4"></video></div>
             </div>
             <div class="column col2">
-                <!-- [修改说明] 首行默认展示 -->
-                <div class="prompt-wrap audio-control fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.mp4"></video></div>
+                <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.mp4"></video></div>
                 <div class="prompt-wrap audio-control hidden-item fade-in-element"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.mp4"></video></div>
@@ -516,7 +537,6 @@
             <button class="show-more-btn">Show More Cases <i class="fas fa-chevron-down"></i></button>
         </div>
     </section>
-
 
     <!-- ================== 原样保留的底部内容 ================== -->
     <section id="Pipeline">
@@ -563,7 +583,7 @@
         const passSubmit = document.getElementById('password-submit');
         const passError = document.getElementById('password-error');
         function checkPassword() {
-            if (passInput.value === '1') { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; } 
+            if (passInput.value === 'klingcamera') { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; } 
             else { passError.style.display = 'block'; }
         }
         if (overlay) {
@@ -572,141 +592,75 @@
             document.body.style.overflow = 'hidden';
         }
 
+        // ==============================================================================
+        // ====== 核心优化逻辑区（滚动淡入淡出、两栏展开、后台预加载） ======
+        // ==============================================================================
 
-        // ==============================================================================
-        // ====== 核心功能区（3D 轮播图控制、滚动淡入、两栏瀑布流展开、后台预加载） ======
-        // ==============================================================================
         document.addEventListener('DOMContentLoaded', () => {
 
-            /* ---------------------------------------------------- */
-            /* 参数调优区                                           */
-            /* ---------------------------------------------------- */
-            // 每次点击 Show More 按钮，每列揭开的视频数量 (因为是双栏，设置 2 等于一次揭开 4 个视频)
+            /* 
+             * 【参数调优区：随时修改这里控制页面表现】 
+             */
+            
+            // 1. Show More 点击后，每一列追加显示的视频数 (因为是2栏，写2代表一次展开4个视频)
             const REVEAL_PER_COLUMN = 2; 
             
-            // 后台偷偷拉取视频的间隔毫秒数 (建议 1500，不会占用系统资源导致卡顿)
+            // 2. 后台静默预加载间隔 (毫秒)。越长越省流量不卡顿，默认1500毫秒偷偷拉一个。
             const BACKGROUND_LOAD_DELAY = 1500; 
 
-            // 淡入淡出的视口触发边缘配置
+            // 3. 滚动可见性的触发边界：决定元素在屏幕什么位置开始淡入淡出
             const observerOptions = {
                 root: null,
-                rootMargin: "-5% 0px -5% 0px", // 划出屏幕 5% 外则隐藏，进入屏幕 5% 内则显现
-                threshold: 0.1 
+                // "-5% 0px -5% 0px" 代表元素刚进入屏幕顶部或底部 5% 范围就开始触发淡入
+                // 也代表如果滑出屏幕 5% 以外，就会直接淡出隐藏
+                rootMargin: "-5% 0px -5% 0px", 
+                threshold: 0.1 // 元素展示 10% 即判定为可见
             };
 
-
-            /* ---------------------------------------------------- */
-            /* 1. 3D 轮播图 (Carousel) 交互控制逻辑                 */
-            /* ---------------------------------------------------- */
-            document.querySelectorAll('.carousel-container').forEach(container => {
-                let items = Array.from(container.querySelectorAll('.carousel-item'));
-                // 默认 3 个视频的初始空间站位配置
-                let states = ['pos-left', 'pos-center', 'pos-right'];
-
-                function applyStates() {
-                    items.forEach((item, index) => {
-                        item.classList.remove('pos-left', 'pos-center', 'pos-right');
-                        item.classList.add(states[index]);
-                    });
-                }
-
-                // 向左转动 (即看到右侧的视频)
-                function rotateLeft() {
-                    states.push(states.shift());
-                    applyStates();
-                }
-
-                // 向右转动 (即看到左侧的视频)
-                function rotateRight() {
-                    states.unshift(states.pop());
-                    applyStates();
-                }
-
-                // 点击边缘变灰的视频即可切换到中心
-                items.forEach(item => {
-                    item.addEventListener('click', () => {
-                        if (item.classList.contains('pos-left')) rotateRight();
-                        if (item.classList.contains('pos-right')) rotateLeft();
-                    });
-                });
-
-                // 拖拽 / 触屏滑动 (Swipe) 支持
-                let startX = 0;
-                let isDragging = false;
-                
-                // 触屏滑动
-                container.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; }, {passive: true});
-                container.addEventListener('touchend', e => {
-                    if(!isDragging) return;
-                    let endX = e.changedTouches[0].clientX;
-                    if(endX < startX - 50) rotateLeft();  // 向左滑
-                    if(endX > startX + 50) rotateRight(); // 向右滑
-                    isDragging = false;
-                });
-                
-                // 鼠标拖拽
-                container.addEventListener('mousedown', e => { startX = e.clientX; isDragging = true; });
-                container.addEventListener('mouseup', e => {
-                    if(!isDragging) return;
-                    let endX = e.clientX;
-                    if(endX < startX - 50) rotateLeft();  
-                    if(endX > startX + 50) rotateRight(); 
-                    isDragging = false;
-                });
-
-                // 初始化部署站位
-                applyStates();
-            });
-
-
-            /* ---------------------------------------------------- */
-            /* 2. 滚动监听与懒加载控制 (Observer)                   */
-            /* ---------------------------------------------------- */
+            /* 双向滚动监听：不仅进入视口会淡入加载，离开视口也会淡出以产生呼吸感 */
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     const el = entry.target;
                     
                     if (entry.isIntersecting) {
-                        el.classList.add('visible'); // 添上显示动画
+                        // 1. 进入视口 -> 执行淡入动画
+                        el.classList.add('visible');
 
-                        // 批量检查此区块内是否有未加载过的懒加载视频 (主要是轮播图内有3个视频需要同时激活)
-                        const videos = el.querySelectorAll('video[data-src]');
-                        videos.forEach(video => {
+                        // 2. 如果带有未加载的视频资源，将其唤醒
+                        const video = el.querySelector('video[data-src]');
+                        if (video) {
                             video.src = video.dataset.src;
                             video.poster = video.dataset.poster;
-                            // 加载后即刻清理 dataset 防止重复触发
+                            // 加载后立刻清除 data-属性，防止反复触发
                             video.removeAttribute('data-src');
                             video.removeAttribute('data-poster');
                             video.load(); 
 
-                            // 为新视频绑定点击播放 (继承原有的交互逻辑)
+                            // 为新视频绑定原有的点击播放逻辑
                             const parent = video.parentElement;
                             const onClick = function() {
                                 video.play();
                                 parent.removeEventListener('click', onClick);
                             };
                             parent.addEventListener('click', onClick);
-                        });
+                        }
                     } else {
-                        // 离开视口时淡出，制造极致的页面呼吸感
+                        // 离开视口 -> 执行淡出隐藏动画 (制造一次只显示一个的错觉)
                         el.classList.remove('visible');
                     }
                 });
             }, observerOptions);
 
-            // 将所有带有 fade-in-element 且目前并非绝对隐藏的元素交由监听器监控
+            // 初始化：把页面上所有带有 fade-in-element 且当前并未被 hidden-item 隐藏的元素交由监听器
             document.querySelectorAll('.fade-in-element:not(.hidden-item)').forEach(el => {
                 fadeObserver.observe(el);
             });
 
-
-            /* ---------------------------------------------------- */
-            /* 3. Show More 瀑布流双列展开逻辑                      */
-            /* ---------------------------------------------------- */
+            /* Show More 瀑布流双列加载逻辑 */
             document.querySelectorAll('.show-more-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const section = btn.closest('section');
-                    // 圈定当前大类的双列容器
+                    // 找到当前大类下专门用来放瀑布流的两列 column
                     const columns = Array.from(section.querySelectorAll('.container .column'));
                     
                     columns.forEach(col => {
@@ -714,13 +668,14 @@
                         const itemsToShow = hiddenItems.slice(0, REVEAL_PER_COLUMN);
                         
                         itemsToShow.forEach(item => {
+                            // 脱掉隐藏外衣
                             item.classList.remove('hidden-item');
-                            // 延时极短的一瞬再加入滚动监听，让 CSS 知道这是一个全新的动画起点
+                            // 用极短延迟推入滚动监听器，保证 CSS 的从 0 到 1 动画可以流畅播放
                             setTimeout(() => fadeObserver.observe(item), 30);
                         });
                     });
 
-                    // 所有视频披露完毕后销毁按钮
+                    // 检查此分类下是否所有隐藏视频均已展出，展出完毕则隐藏此按钮
                     const remainingHidden = section.querySelectorAll('.container .hidden-item');
                     if (remainingHidden.length === 0) {
                         btn.parentElement.style.display = 'none';
@@ -728,10 +683,8 @@
                 });
             });
 
-
-            /* ---------------------------------------------------- */
-            /* 4. 后台静默预加载缓存队列 (极限压榨用户驻留时间)     */
-            /* ---------------------------------------------------- */
+            /* 后台静默预取队列 (Background Silent Queue) */
+            // 榨干用户停留在英文文案的时间，偷偷把视频缓存到本地
             const allHiddenVideos = Array.from(document.querySelectorAll('.hidden-item video[data-src]'));
             let currentLoadIndex = 0;
 
@@ -742,7 +695,7 @@
                 const targetSrc = video.dataset.src;
                 
                 if (targetSrc) {
-                    // 使用极低优先级的 no-cors 请求，它不占据渲染线程，只会把文件拖进浏览器 Disk Cache
+                    // 低优先级 fetch：利用 no-cors 将视频拖入磁盘缓存，完全不阻塞当前画面的滚动渲染
                     fetch(targetSrc, { mode: 'no-cors', priority: 'low' })
                         .catch(() => {});
                 }
@@ -751,7 +704,7 @@
                 setTimeout(processBackgroundLoad, BACKGROUND_LOAD_DELAY);
             }
 
-            // 在系统主线程有空的时候才去拉预下载，绝不卡主页面
+            // 开启后台偷偷加载任务
             if (window.requestIdleCallback) {
                 requestIdleCallback(() => { setTimeout(processBackgroundLoad, 1500); });
             } else {
@@ -762,27 +715,3 @@
     </script>
 </body>
 </html>
-
-<!--
-【关于新增核心修改参数说明】
-如果你后续还想进行微调，可以参考这三个关键参数：
-
-1. 整体页面最大宽度 (影响轮播图能撑到多大)
-   找到 CSS 代码第 89 行左右：
-   section { max-width: 1250px !important; } 
-   将 1250px 调整为 1400px，页面就能展得更宽，轮播图就更大。
-
-2. 轮播图大小与左右拉开距离
-   找到 CSS 代码第 135 行左右：
-   .carousel-item { width: 60%; } 
-   将 60% 调到 65% 中心视频就会更大。
-   
-   接着看下面两行（144、151 行附近）：
-   transform: translateX(-55%) scale(0.85); 
-   如果中心调到了 65%，你可能需要把偏移量 translateX(-55%) 调大成 translateX(-60%) 才能把边上的视频推开，避免挡住中心。
-
-3. 两侧视频变灰程度
-   找到 CSS 代码第 148 和 155 行：
-   filter: brightness(0.6); 
-   修改成 0.3 会非常黑，1 会完全没有灰度。
--->
