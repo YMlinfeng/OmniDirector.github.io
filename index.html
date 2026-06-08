@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Kling-Avatar</title>
-    <meta name="description" content="Kling-Avatar:Grounding Multimodal Instructions for Cascaded
-    Long-Duration Avatar Animation Synthesis">
+    <title>OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation</title>
+    <meta name="description" content="OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation">
     <meta name="keywords" content="Avatar, Animation, Cognitive Simulation, Multimodal, LLM">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
@@ -528,56 +527,23 @@
     <div id="intro">
         <div class="content">
             <div style="text-align: center;">
-            <img src="image/logo.png" alt="Kling Logo" style="height: 80px; margin-bottom: 25ßpx;" />
+            <img src="image/logo.png" alt="Kling Logo" style="height: 80px; margin-bottom: 25px;" />
             <h2 style="font-size: 3.2rem; font-weight: 400;  color: #f7fcf9;  ">
-                Kling-Avatar: Grounding Multimodal Instructions for Cascaded
-                Long-Duration Avatar Animation Synthesis
+                OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation
             </h2>
             <div style="margin-top: 30px;"></div>
 
             <span style="opacity: 0.6; font-size: 1.35rem;">
-                <a href="https://yikang98.github.io/" target="_blank" rel="noopener noreferrer">Yikang Ding<sup>*</sup></a>,
-                <a>Jiwen Liu<sup>*</sup></a>,
-                <a href="https://wen-yuan-zhang.github.io/" target="_blank" rel="noopener noreferrer">Wenyuan Zhang</a>,
-                <a href="https://zenmoore.github.io/" target="_blank" rel="noopener noreferrer">Zekun Wang</a>,
-                <a href="https://vincenthu19.github.io/" target="_blank" rel="noopener noreferrer">Wentao Hu</a>,
-                <a href="https://scholar.google.com/citations?user=WhwTrhcAAAAJ&hl=zh-CN" target="_blank" rel="noopener noreferrer">Liyuan Cui</a>,
-                <a>Mingming Lao</a>,
-                <!-- <a>Yingchao Shao</a>,
-                <a>Hui Liu</a>,
+                <a>Jiwen Liu</a>,
+                <a>Yan Zhou</a>,
                 <a>Xiaohan Li</a>,
-                <a href="https://openreview.net/profile?id=~Xiaoqiang_Liu3" target="_blank" rel="noopener noreferrer">Xiaoqiang Liu</a>,
-                <a href="https://yushen-liu.github.io/" target="_blank" rel="noopener noreferrer">Yu-Shen Liu</a>,
-                <a href="https://magicwpf.github.io/" target="_blank" rel="noopener noreferrer">Pengfei Wan</a>, -->
+                <a>Zhixue Fang</a>,
+                <a>Zhimin Zhang</a>,
+                <a>Shujuan Li</a>,
+                <a>Zijie Meng</a>
             </span>
-       <p></p>
-             <span style="opacity: 0.6; font-size: 1.35rem;">
-                <!-- <a href="https://yikang98.github.io/" target="_blank" rel="noopener noreferrer">Yikang Ding<sup>*</sup></a>,
-                <a>Jiwen Liu<sup>*</sup></a>,
-                <a href="https://wen-yuan-zhang.github.io/" target="_blank" rel="noopener noreferrer">Wenyuan Zhang</a>,
-                <a href="https://zenmoore.github.io/" target="_blank" rel="noopener noreferrer">Zekun Wang</a>,
-                <a href="https://vincenthu19.github.io/" target="_blank" rel="noopener noreferrer">Wentao Hu</a>,
-                <a href="https://scholar.google.com/citations?user=WhwTrhcAAAAJ&hl=zh-CN" target="_blank" rel="noopener noreferrer">Liyuan Cui</a>,
-                <a>Mingming Lao</a>, -->
-                <a>Yingchao Shao</a>,
-                <a>Hui Liu</a>,
-                <a>Xiaohan Li</a>,
-                <a href="https://scholar.google.com/citations?user=eH4ofxMAAAAJ&hl=zh-CN" target="_blank" rel="noopener noreferrer">Ming Chen</a>,
-                <a href="https://openreview.net/profile?id=~Xiaoqiang_Liu3" target="_blank" rel="noopener noreferrer">Xiaoqiang Liu</a>,
-                <a href="https://yushen-liu.github.io/" target="_blank" rel="noopener noreferrer">Yu-Shen Liu</a>,
-                <a href="https://magicwpf.github.io/" target="_blank" rel="noopener noreferrer">Pengfei Wan</a>
-            </span>
-
-            <div style="margin-top: 15px;"></div>
-
-            <a style="opacity: 0.6; font-size: 1.3rem;"><sup>*</sup>Equal contribution
-                
             <div style="margin-top: 20px;"></div>
 
-            <span style="opacity: 0.6;">
-                <a style="font-size: 1.5rem; display: inline-block;">Kling Team, Kuaishou Technology</a>
-            </span>
- 
             <div style="margin-top: 75px;"></div>
                 <!-- <a class="button" href="https://arxiv.org/abs/2508.19209" target="_blank" rel="noopener noreferrer" style="border: 2px solid #17181a; padding: 10px 20px; text-align: center; display: inline-block;">
                     <span style="color: #fff;">
@@ -667,232 +633,278 @@
     </div>
     </div>
 
-    <section id="High-Quality Videos with Accurate Lip–Audio Alignment" style="margin-top: 200px;">
-        <div class="title">High-Quality Videos with Accurate Lip–Audio Alignment</div>
-        <div class="container">
-           <div class="column col1">
-                 <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-2.mp4" poster="vis/align-2.jpg" ></video>
-                </div>
-                    <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-8.mp4" poster="vis/align-8.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-9.mp4" poster="vis/align-9.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-18.mp4" poster="vis/align-18.jpg" ></video>
-                </div>
-                 <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-13.mp4" poster="vis/align-13.jpg" ></video>
-                </div>
-                 <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-11.mp4" poster="vis/align-11.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-6.mp4" poster="vis/align-6.jpg" ></video>
-                </div>
+    <section id="Scene-Generalization" style="margin-top: 200px;">
+        <div class="title">Scene Generalization</div>
+        <div class="masonry">
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot184.mp4"></video>
             </div>
-
-            <div class="column col2">
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-10-v2.mp4" poster="vis/align-10.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-12.mp4" poster="vis/align-12.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-14.mp4" poster="vis/align-14.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-7.mp4" poster="vis/align-7.jpg" ></video>
-                </div>
-                 <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-3.mp4" poster="vis/align-3.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-19.mp4" poster="vis/align-19.jpg" ></video>
-                </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot56 (1).mp4"></video>
             </div>
-
-            <div class="column col3">
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-16.mp4" poster="vis/align-16.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-4.mp4" poster="vis/align-4.jpg" ></video>
-                </div>
-                 <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-1.mp4" poster="vis/align-1.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-15.mp4" poster="vis/align-15.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-5.mp4" poster="vis/align-5.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-20.mp4" poster="vis/align-20.jpg" ></video>
-                </div>
-                <div class="prompt-wrap audio-control">
-                    <video playsinline controls  loop  preload="none" src="vis/align-17.mp4" poster="vis/align-17.jpg" ></video>
-                </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.mp4"></video>
             </div>
-        </div>
-
-    </section>
-
-
-    <section id="Multimodal Instruction Control">
-        <div class="title">Multimodal Instruction Control</div>
-         <div class="flex-row">
-           <div class="prompt-wrap audio-control" style="flex-grow: 0.5  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-6.jpg" src="vis/control-6.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Dynamics) </strong> The woman slowly turns her body, placing her hands on her waist.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14 (2).mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.525; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-1.jpg" src="vis/control-1.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Dynamics) </strong> The girl turned her face left and right, occasionally touching her cheek with her hand.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.7; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-7.jpg" src="vis/control-7.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Dynamics) </strong> The girl raised her arms and turned half a circle to the left and right, showing her clothes.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24 (1).mp4"></video>
             </div>
-        </div>
-
-
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control ">
-                <video playsinline controls  loop  preload="none" poster="vis/control-0.jpg" src="vis/control-0.mp4"></video><a class="full-screen-button"></a>
-                 <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Emotion) </strong> The man is extremely angry and emotional.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 1.88; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-5.jpg" src="vis/control-5.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Emotion) </strong> The man looks very surprised, his eyes widened involuntarily and his eyebrows raised high. 
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.84; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-8.jpg" src="vis/control-8.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Emotion) </strong> The boy looked quite happy, with his eyes curved and smiling.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.mp4"></video>
             </div>
-        </div>
-
-        <div class="flex-row">
-           <div class="prompt-wrap audio-control" style="flex-grow: 0.55  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-3.jpg" src="vis/control-3.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Emotion) </strong> The woman looks stern and unapproachable, projecting a sense of dominance.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.17; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-4.jpg" src="vis/control-4.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Emotion) </strong> The girl is talking excitedly with a smile on her face.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot258.mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.5; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-2.jpg" src="vis/control-2.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Emotion) </strong> The boy was excited, his eyebrows kept twitching and his eyes were shining with excitement.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot282.mp4"></video>
             </div>
-        </div>
-
-         <div class="flex-row">
-           <div class="prompt-wrap audio-control" style="flex-grow: 0.46  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-9.jpg" src="vis/control-9.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Camera) </strong> The camera gradually moves upward.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video>
             </div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.56; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/control-12.jpg" src="vis/control-12.mp4"></video><a class="full-screen-button"></a>
-                <p class="video-caption">
-                    <strong style="color: rgb(210, 209, 209); opacity: 1;"> (Camera) </strong> The camera moves to the left around the subject.
-                </p>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot307.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot312.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot385.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot393.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.mp4"></video>
             </div>
         </div>
     </section>
-    <section id="Long-Duration Video Generation">
-        <div class="title">Long-Duration Video Generation</div>
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.449  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/long-0.jpg" src="vis/long-0.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.61  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/long-3.jpg" src="vis/long-3.mp4"></video><a class="full-screen-button"></a></div>
-        </div>
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.25  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/long-2.jpg" src="vis/long-2.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.79 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/long-1.jpg" src="vis/long-1.mp4"></video><a class="full-screen-button"></a></div>
+
+    <section id="Multi-Shot">
+        <div class="title">Multi Shot</div>
+        <div class="masonry">
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/33401586079.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/4105392481.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot100 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot104 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot131 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot157.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot16 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot196.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot36 (2).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot44 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot47.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118(1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121(1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58 (2).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.mp4"></video>
+            </div>
         </div>
     </section>
 
-    <section id="Generalization to Open Scenarios">
-        <div class="title">Generalization to Open Scenarios</div>
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.57  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-0.jpg" src="vis/open-0.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.205  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-1.jpg" src="vis/open-1.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.23  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-6.jpg" src="vis/open-6.mp4"></video><a class="full-screen-button"></a></div>
+    <section id="Dynamic-Motion">
+        <div class="title">Dynamic Motion</div>
+        <div class="masonry">
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10 (2).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23 (3).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31 (3).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33 (1).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34 (2).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36 (2).mp4"></video>
+            </div>
         </div>
+    </section>
 
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.3 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-2.jpg" src="vis/open-2.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.27  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-4.jpg" src="vis/open-4.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.49  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-5.jpg" src="vis/open-5.mp4"></video><a class="full-screen-button"></a></div>
+    <section id="Special-Camera-Movement">
+        <div class="title">Special Camera Movement</div>
+        <div class="masonry">
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot21 (3).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32 (2).mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.mp4"></video>
+            </div>
+            <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.mp4"></video>
+            </div>
         </div>
-
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.405 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-9.png" src="vis/open-9.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.26  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-8.jpg" src="vis/open-8.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.45  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-12.jpg" src="vis/open-12.mp4"></video><a class="full-screen-button"></a></div>
-        </div>
-
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.905 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-13.jpg" src="vis/open-13-v2.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.8  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-7.jpg" src="vis/open-7.mp4"></video><a class="full-screen-button"></a></div>
-             <div class="prompt-wrap audio-control" style="flex-grow: 0.35 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-16.jpg" src="vis/open-16.mp4"></video><a class="full-screen-button"></a></div>
-        </div>
-
-        <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.5 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-15.jpg" src="vis/open-15.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.5  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-11.jpg" src="vis/open-11.mp4"></video><a class="full-screen-button"></a></div>
-        </div>
-         <div class="flex-row">
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.25 ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-3.jpg" src="vis/open-3.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.8  ; height: 100%;">
-                <video playsinline controls  loop  preload="none" poster="vis/open-10.jpg" src="vis/open-10.mp4"></video><a class="full-screen-button"></a></div>
-            <div class="prompt-wrap audio-control" style="flex-grow: 0.3  ; height: 100%;">
-            <video playsinline controls  loop  preload="none" poster="vis/open-14.jpg" src="vis/open-14.mp4"></video><a class="full-screen-button"></a></div>
-        </div>
-    </section>        
+    </section>
 
     
     <section id="Pipeline">
@@ -927,13 +939,12 @@
     <div class="title">BibTeX</div>
     <pre style="text-align: left; margin-left: 0%; margin-right: 0%; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; line-height: 1.4;">
 <code>
-@article{ding2025kling-avatar,
-  title={Kling-Avatar: Grounding Multimodal Instructions for Cascaded Long-Duration Avatar Animation Synthesis},
-  author={Ding, Yikang and Liu, Jiwen and Zhang, Wenyuan and Wang, Zekun and Hu, Wentao and Cui, Liyuan and Lao, Mingming and Shao, Yingchao and Liu, Hui and Li, Xiaohan and Chen, Ming and Liu, Xiaoqiang and Liu, Yu-shen and Wan, Pengfei},
-  journal={arXiv preprint arXiv:2509.09595},
-  year={2025}
+@article{liu2025omnidirector,
+  title={OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation},
+  author={Liu, Jiwen and Zhou, Yan and Li, Xiaohan and Fang, Zhixue and Zhang, Zhimin and Li, Shujuan and Meng, Zijie},
+  journal={arXiv preprint},
+  year={2026}
 }
-
 </code></pre>
 </section>
 
