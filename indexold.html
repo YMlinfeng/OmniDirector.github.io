@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation</title>
+    <meta name="description" content="OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation">
+    <meta name="keywords" content="Avatar, Animation, Cognitive Simulation, Multimodal, LLM">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon">
+    <style>
+        /* ================== 滚动条 ================== */
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background-color: #666; }
+
+        /* ================== 字体 ================== */
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-stretch: 100%;
+            font-display: block;
+            font-weight: 300 700;
+            src: url(v1_5/roboto.woff2) format("woff2");
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+                        U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+                        U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        /* ================== 通用 ================== */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #17181a;
+            color: #fff;   /* tile 的字体*/
+            font-family: "Roboto", sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+        a {
+            color: #999 !important;
+            text-decoration: none !important;
+        }
+        a:hover { color: #999 !important; }
+        /* a:visited { color: #00b831 !important; } */
+        pre, code { color: #999 !important; }
+
+        /* ================== 图片/视频 ================== */
+        video { background-color: #000; width: 100%; }
+        #latent-interpolation video { aspect-ratio: 1; }
+        img {
+            background-color: #17181a;
+            /* aspect-ratio: 1;
+            width: 100%; */
+        }
+
+        /* ================== Header / Intro ================== */
+        #home {
+            position: absolute;
+            top: 20px;
+            left: max(calc(50vw - 1920px/2 + 192px), 10%);
+        }
+        #logo {
+            width: 40px;
+            height: 40px;
+            position: fixed;
+            top: 12px;
+            right: max(calc(50vw - 1920px/2 + 192px), 10%);
+            z-index: 1001;
+        }
+        #intro {
+            padding: 140px 0 80px;
+        }
+        #intro h1 {
+            font-size: 80px;
+            font-weight: 300;
+            margin: 20px 0;
+        }
+        #intro h2 {
+            margin: 20px 0 40px;
+            font-weight: 300;
+            color: #ccc;
+        }
+        #intro strong { font-weight: 700; }
+        #intro h2 strong { color: #fff; }
+
+        /* ================== Section ================== */
+        section {
+            max-width: 1920px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+        section:first-of-type { margin-top: 0; }
+        .content { padding: 0 10%; }
+        .content p { color: #999 !important; }
+
+        /* ================== 按钮 ================== */
+        .button {
+            padding-right: 16px;
+            border-radius: 8px;
+            color: #fff;
+            background-color: #74ff521f;
+            cursor: pointer;
+            transition: background-color .5s;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        .button .icon {
+            box-sizing: content-box;
+            padding: 8px;
+            background-color: #ccc;
+            margin-right: 16px;
+            transition: background-color .5s;
+        }
+        .button:hover {
+            /* background-color: #74ff521f; */
+            background-color: #74ff52;
+            color: #000;
+        }
+        .button:hover .icon { background-color: #fff; }
+
+        /* ================== 标题/说明文字 ================== */
+        .title {
+            background-color: #17181a;
+            position: sticky;
+            top: 0;
+            padding: 20px 0;
+            font-size: 28px;
+            font-weight: 600;
+            z-index: 1000;
+            min-height: 60px;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+        .description {
+            padding: 0 0 20px;
+            color: rgb(210, 209, 209);
+            font-size: 20px;    
+            line-height: 1.7;     /* 改成相对行高更稳 */
+            font-weight: 300;
+        }
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* ================== Flex 布局 ================== */
+        .flex-row {
+            display: flex;
+            column-gap: 15px;           /* 列之间间距，原来 5px → 改大 */
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            padding: 0 10px 10px;       /* 左右 padding 稍微大点，行与行之间的间距加大 */
+        }
+        .flex-row > div {
+            flex-grow: 1;
+            flex-basis: 0;
+            position: relative;
+        }
+        .flex {
+            display: flex;
+            flex-wrap: wrap;    
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+       .masonry {
+            column-count: 3;  /*  三列*/
+            column-gap: 16px;  /* 列间距 */
+        }
+
+        .masonry video {
+            width: 100%;       /* 宽度填满列 */
+            margin-bottom: 16px; /* 行间距 */
+            border-radius: 8px;
+            display: block;
+        }
+
+        .container {
+            display: flex;
+            gap: 16px;
+            }
+        /* .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        } */
+         /* 公共样式 */
+.column {
+    flex: 0 0 auto;       /* 不自动拉伸，宽度由 width 决定 */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* 单独控制每一列的宽度 */
+.column.col1 {
+    width: 32%;
+}
+
+.column.col2 {
+    width: 40%;
+}
+
+.column.col3 {
+    width: 26.4%;
+}
+        .column video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .flex > div {
+            width: calc(100% / 3 - 5px * 2 / 3);
+            margin-top: 2.5px;
+            margin-bottom: 2.5px;
+            position: relative;
+        }
+        .prompt-wrap { position: relative; }
+        .flex-2 {
+            justify-content: center;
+            column-gap: 5px;
+        }
+        .flex-2 > div {
+            width: calc(100% / 2 - 5px / 2);
+            min-width: calc(100% / 3 - 5px * 2 / 3);
+            max-width: calc(100vh - 200px);
+        }
+
+        /* ================== 提示框 ================== */
+        .prompt {
+            max-width: calc(100% - 20px);
+            position: absolute;
+            background: #00000080;
+            color: #ffffffe6;
+            font-size: 10px;
+            backdrop-filter: blur(10px);
+            bottom: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .5s;
+            box-sizing: border-box;
+        }
+        .full-screen-button {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #00000080;
+            backdrop-filter: blur(10px);
+            background-size: 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .5s;
+            cursor: pointer;
+        }
+        .flex-very-compact .full-screen-button {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            border-radius: 0;
+        }
+
+        /* ================== 其他 ================== */
+        .margin-top { margin-top: 50px; }
+        .ruler {
+            text-align: center;
+            position: sticky;
+            top: 60px;
+            z-index: 999;
+            background-color: #000;
+            color: #999;
+            padding: 5px 0;
+        }
+        .ruler > div { width: 100%; overflow: hidden; }
+        .selected { box-shadow: 0 0 0 5px #fff; }
+
+        /* ================== Footer ================== */
+        #footer {
+            background: linear-gradient(transparent, #000 100px);
+            padding-top: 100px;
+            box-sizing: content-box;
+            z-index: 10000;
+            position: relative;
+        }
+        #footer #links {
+            position: absolute;
+            bottom: 16px;
+            width: 100%;
+            height: 50px;
+            margin-top: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+        }
+        #footer #links[visible] {
+            transition: opacity .5s;
+            transition-delay: .5s;
+            opacity: 1;
+        }
+
+        /* ================== Contributors ================== */
+        #contributors {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 200;
+        }
+        #contributors strong {
+            color: #999;
+            font-weight: 200;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        #contributors a {
+            display: block;
+            padding: 3px 20px;
+            border-radius: 100px;
+            background-color: #000;
+            transition: background-color .2s;
+            text-decoration: none;
+            color: #fff;
+        }
+        #contributors a:hover { background: #222; }
+
+        /* ================== 表格 ================== */
+        table {
+            width: calc(80% + 24px);
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        thead { color: #ccc; }
+        thead tr {
+            position: sticky;
+            top: 60px;
+            background: #000;
+        }
+        tr {
+            border-bottom: 1px solid #333;
+            transition: background .5s;
+        }
+        td { padding: 10px 12px; }
+        td:first-child { line-break: anywhere; }
+        table a {
+            display: block;
+            width: 32px;
+            height: 24px;
+            background-position: center no-repeat;
+        }
+
+        /* ================== 导航按钮 ================== */
+        .outer-wrap {
+            display: flex;
+            justify-content: center;
+        }
+        .nav-button {
+            border-radius: 8px;
+            color: #fff;
+            background-color: #333;
+            padding: 8px 12px 8px 8px;
+            text-decoration: none;
+            opacity: .5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity .2s;
+        }
+        .nav-button:hover { opacity: 1; }
+
+
+        /* ================== Hover 效果 ================== */
+        @media (hover: hover) {
+            .prompt-wrap:hover .prompt,
+            .full-screen-wrap:hover .full-screen-button {
+                opacity: 1;
+                pointer-events: all;
+            }
+            #contributors a:hover { background: #222; }
+            tbody tr:hover { background: #222; }
+        }
+
+        /* ================== 响应式 ================== */
+        @media (max-width: 640px) {
+            #intro h1 { font-size: 50px; }
+            #intro h2 { font-size: 20px; }
+            .ruler { font-size: 10px; }
+        }
+        @media (max-width: 512px) {
+            .content { padding: 0 12px; }
+            .description { padding: 0 12px 20px; }
+            .title { padding: 20px 12px; }
+            #home { left: 12px; }
+            #logo { right: 12px; position: absolute; }
+            .ruler-tight { font-size: 6px; column-gap: 0; }
+            .title-long { font-size: 16px; }
+            .flex-compact .full-screen-button {
+                width: 100%;
+                height: 100%;
+                top: 0;
+                right: 0;
+                border-radius: 0;
+            }
+            table { width: 100%; font-size: 12px; }
+            td { padding: 10px 4px; }
+            td:first-child { padding-left: 12px; }
+            td:last-child { padding-right: 12px; }
+        }
+        /* ===== 带音频交互的容器 ===== */
+        @media (min-width: 640px) {
+            body[muted=false] .audio-control:hover {
+                transform: scale(1.05);
+                z-index: 1;
+                box-shadow: 0 0 32px rgba(0,0,0,0.8);
+            }
+        }
+        .audio-control {
+            transition: transform 0.5s, box-shadow 0.5s;
+        }
+        .audio-control video {
+            border-radius: 12px;     /* 给视频本身加圆角 */
+            overflow: hidden;
+            display: block;          /* 避免内联元素有奇怪的间隙 */
+        }
+        .audio-control:hover {
+            transform: scale(1.1);
+            z-index: 1;
+            box-shadow: 0 0 32px rgba(0,0,0,0.8);
+        }
+    
+
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+</head>
+<body>
+
+    <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #17181a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <img src="image/logo.png" alt="Logo" style="height: 60px; margin-bottom: 20px;" />
+        <h2 style="color: white; margin-bottom: 20px; font-weight: 300;">Private Debug Mode</h2>
+        <input type="password" id="password-input" placeholder="Enter password" style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #333; margin-bottom: 10px; background: #222; color: #fff; width: 250px; text-align: center; outline: none;">
+        <button id="password-submit" style="padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; background: #fff; color: #000; border: none; font-weight: bold; width: 250px; transition: background 0.3s;">Verify</button>
+        <p id="password-error" style="color: #ff5252; display: none; margin-top: 10px;">Incorrect password</p>
+    </div>
+
+
+        <!-- <div class="nav-container" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1001; text-align: center;">
+            <button id="nav-button" class="nav-button"  style="border: 2px solid #000; padding: 10px 20px; text-align: center; display: inline-block;">
+                <strong style="color: rgb(255, 255, 255);"> More Research</strong>
+            </button>
+            <div id="dropdown-menu" class="dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; background-color: #333; border-radius: 8px; padding: 8px 0; margin-top: 4px; min-width: 160px; z-index: 1002;">
+                <a href="https://ziqiaopeng.github.io/OmniSync/" class="dropdown-item" style="display: block; padding: 8px 16px; color: white; text-decoration: none; transition: background-color 0.2s;">
+                    OmniSync
+                </a>
+                <a href="https://liveportrait.org/zh" class="dropdown-item" style="display: block; padding: 8px 16px; color: white; text-decoration: none; transition: background-color 0.2s;">
+                    LivePortrait
+                </a>
+                <a href="https://chenmingthu.github.io/milm/" class="dropdown-item" style="display: block; padding: 8px 16px; color: white; text-decoration: none; transition: background-color 0.2s;">
+                    Midas
+                </a>
+            </div>
+        </div> -->
+
+        <!-- <a href="#core-capabilities" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Core Capabilities</a>            <a href="#context-aware-audio-driven-animation" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Audio-Driven Animation</a>            <a href="#text-guided-multimodal-animation" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Multimodal Animation</a>            <a href="#cinematic-performances" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Cinematic Performances</a>            <a href="#rhythmic-performances" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Rhythmic Performances</a>            <a href="#diversity-and-robustness" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Diversity</a>            <a href="#multi-person-scene-performance" class="nav-link" style="color: white; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; writing-mode: horizontal-tb; text-orientation: mixed;">Multi-Person Scene</a> -->
+        <div class="side-nav" style="position: fixed; top: 20px; left: 50%; transform: translateX(-55%); z-index: 1000; display: flex; flex-direction: row; gap: 20px; padding: 12px;">                    </div>        <style>            .nav-link:hover {                opacity: 1;            }            @media (max-width: 768px) {                .side-nav {                    left: 10px;                }                .nav-link {                    font-size: 12px;                }            }            @media (max-width: 512px) {                .side-nav {                    display: none;                }            }        
+
+
+    </style>        <script>
+            // 下拉菜单交互功能
+            document.addEventListener('DOMContentLoaded', function() {
+                const navButton = document.getElementById('nav-button');
+                const dropdownMenu = document.getElementById('dropdown-menu');
+
+                // 加上判空条件，防止找不到元素时报错阻断脚本
+                if (navButton && dropdownMenu) { 
+                    navButton.addEventListener('click', function() {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    // 点击其他地方关闭下拉菜单
+                    document.addEventListener('click', function(event) {
+                        if (!navButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                            dropdownMenu.style.display = 'none';
+                        }
+                    });
+                }
+
+                // 导航链接悬停效果
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('mouseover', function() {
+                        this.style.opacity = '1';
+                    });
+                    link.addEventListener('mouseout', function() {
+                        this.style.opacity = '0.7';
+                    });
+                });
+
+                // 下拉菜单项悬停效果
+                const dropdownItems = document.querySelectorAll('.dropdown-item');
+                dropdownItems.forEach(item => {
+                    item.addEventListener('mouseover', function() {
+                        this.style.backgroundColor = '#555';
+                    });
+                    item.addEventListener('mouseout', function() {
+                        this.style.backgroundColor = 'transparent';
+                    });
+                });
+            });
+        </script>
+        <style>
+        .prompt-wrap {
+            position: relative;
+        }
+        .prompt-wrap video {
+            width: 100%;
+        }
+        /* 隐藏默认控件 */
+        .prompt-wrap video::-webkit-media-controls {
+            display: none !important;
+        }
+        /* 鼠标悬停时显示控件 */
+        .prompt-wrap:hover video::-webkit-media-controls {
+            display: flex !important;
+        }
+    
+
+
+    </style>
+    <div id="intro">
+        <div class="content">
+            <div style="text-align: center;">
+            <img src="image/logo.png" alt="Kling Logo" style="height: 80px; margin-bottom: 25px;" />
+            <h2 style="font-size: 3.2rem; font-weight: 400;  color: #f7fcf9;  ">
+                OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation
+            </h2>
+            <div style="margin-top: 30px;"></div>
+
+            <span style="opacity: 0.6; font-size: 1.35rem;">
+                <a>Jiwen Liu</a>,
+                <a>Yan Zhou</a>,
+                <a>Xiaohan Li</a>,
+                <a>Zhixue Fang</a>,
+                <a>Zhimin Zhang</a>,
+                <a>Shujuan Li</a>,
+                <a>Zijie Meng</a>
+            </span>
+            <div style="margin-top: 20px;"></div>
+
+            <div style="margin-top: 75px;"></div>
+                <!-- <a class="button" href="https://arxiv.org/abs/2508.19209" target="_blank" rel="noopener noreferrer" style="border: 2px solid #17181a; padding: 10px 20px; text-align: center; display: inline-block;">
+                    <span style="color: #fff;">
+                        Technical Report
+                    </span>
+                </a>
+            </div> -->
+            
+            <div class="publication-links" style="transform: scale(1.2); transform-origin: center center; margin-left: -20px;">
+                <div class="publication-links">
+                    <span class="link-block">
+                        <a href="https://arxiv.org/abs/2509.09595" class="external-link button is-normal is-rounded light-btn btn-font">
+                        <span class="icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span class="sansfont">Paper</span>
+                        </a>
+                    </span>
+                        <span class="link-block">
+                            <a class="external-link button is-normal is-rounded light-btn btn-font">
+                            <span class="icon">
+                                <i class="fa fa-database" aria-hidden="true"></i>
+                            </span>
+                            <span class="sansfont">Benchmark (Coming soon)</span>
+                            </a>
+                        </span>
+
+                        <span class="link-block">
+                            <a href="bib.txt" class="external-link button is-normal is-rounded light-btn btn-font">
+                            <span class="icon">
+                                <i class="fa fa-quote-left"></i>
+                            </span>
+                            <span class="sansfont">Cite</span>
+                            </a>
+                        </span>
+            
+
+                       <span class="link-block" style="position: relative; display: inline-block; z-index: 2000;">
+                <!-- 按钮 -->
+                <a href="javascript:void(0);" 
+                    class="external-link button is-normal is-rounded light-btn btn-font" 
+                    id="nav-button-research">
+                    <span class="icon"><i class="fas fa-microscope"></i></span>
+                    <span class="sansfont">More Research</span>
+                </a>
+
+                <div id="dropdown-menu-research" class="dropdown-menu" 
+                    style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+                        background-color:#333; border-radius:6px; padding:4px 0; margin-top:6px;
+                        min-width:120px; max-width:180px; font-size:14px; z-index:3000; white-space:nowrap;">
+                    <a href="https://ziqiaopeng.github.io/OmniSync/" class="dropdown-item"
+                        style="display:block; padding:6px 12px; color:white; text-decoration:none;">OmniSync</a>
+                    <a href="https://liveportrait.github.io/" class="dropdown-item"
+                        style="display:block; padding:6px 12px; color:white; text-decoration:none;">LivePortrait</a>
+                    <a href="https://chenmingthu.github.io/milm/" class="dropdown-item"
+                        style="display:block; padding:6px 12px; color:white; text-decoration:none;">Midas</a>
+                    <a href="https://vincenthu19.github.io/GGTalker/" class="dropdown-item"
+                        style="display:block; padding:6px 12px; color:white; text-decoration:none;">GGTalker</a>
+                </div>
+                </span>
+
+                <style>
+                .dropdown-item:hover {
+                    background-color: #555; /* 鼠标移上去时变灰 */
+                    color: #fff;
+                }
+                
+
+
+    </style>
+
+<script>
+  const navBtn = document.getElementById("nav-button-research");
+  const dropdown = document.getElementById("dropdown-menu-research");
+
+  navBtn.addEventListener("click", function(e) {
+    e.preventDefault(); // 阻止跳到顶部
+    dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+  });
+
+  // 点击外部关闭菜单
+  document.addEventListener("click", function(e) {
+    if (!navBtn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+</script>
+
+            </div>
+    </div>
+    </div>
+
+    <section id="Scene-Generalization" style="margin-top: 200px;">
+        <div class="title">Scene Generalization</div>
+        <div class="container">
+            <div class="column col1">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot184.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot184.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_14%20%282%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_30.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot295.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot313.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot393.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot393.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_63.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_76.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_289.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__259.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__58.mp4"></video>
+            </div>
+            </div>
+            <div class="column col2">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot56%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot56%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_18.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_34-.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot258.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot258.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot307.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot307.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot343.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot494.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__267.mp4"></video>
+            </div>
+            </div>
+            <div class="column col3">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_12.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_24%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.jpg" src="camera/scene_generalization/cameraMotionTransfer_multi_shot_hard_46.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot282.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot282.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot312.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot312.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot385.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot385.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_58.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.jpg" src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="Multi-Shot">
+        <div class="title">Multi Shot</div>
+        <div class="container">
+            <div class="column col1">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/33401586079.jpg" src="camera/multi_shot/33401586079.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot104%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot16%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_118%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_20.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_58%20%282%29.mp4"></video>
+            </div>
+            </div>
+            <div class="column col2">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/4105392481.jpg" src="camera/multi_shot/4105392481.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot131%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot131%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot196.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot196.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot47.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot47.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_121%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_45.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_76.mp4"></video>
+            </div>
+            </div>
+            <div class="column col3">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot100%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot100%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot157.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot157.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.jpg" src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.mp4"></video>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="Dynamic-Motion">
+        <div class="title">Dynamic Motion</div>
+        <div class="container">
+            <div class="column col1">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_hard_102.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_15.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_23%20%283%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_34%20%282%29.mp4"></video>
+            </div>
+            </div>
+            <div class="column col2">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_10%20%282%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_2.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_26.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_31%20%283%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_36%20%282%29.mp4"></video>
+            </div>
+            </div>
+            <div class="column col3">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.jpg" src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.mp4"></video>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="Special-Camera-Movement">
+        <div class="title">Special Camera Movement</div>
+        <div class="container">
+            <div class="column col1">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot21%20%283%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_11.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_220.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_74.mp4"></video>
+            </div>
+            </div>
+            <div class="column col2">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_32%20%282%29.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_123.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_243.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_304.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_85.mp4"></video>
+            </div>
+            </div>
+            <div class="column col3">
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_1.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_211.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_265.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_305.mp4"></video>
+            </div>
+                <div class="prompt-wrap audio-control">
+                <video playsinline controls loop preload="none" poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.jpg" src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new__281.mp4"></video>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="Pipeline">
+    <div class="title">Pipeline</div>
+        <div style="text-align: center; margin-top: 20px;">
+        <img src="image/overall.png?v=2"
+            alt="Pipeline"
+            style="width: auto; max-width: 95%; height: auto; border-radius: 8px; display: inline-block;" />
+        </div>
+
+    <div class="description">
+       An MLLM Director first interprets multimodal instructions into high-level semantics and tells a storyline. Guided by this global planning, the first stage generates a blueprint video. In the second stage, keyframes are extracted from the blueprint and used as first–last frame conditions for parallel sub-clip generation, refining local details and dynamics to synthesize long-duration videos.
+    </div>
+    </section>
+
+    <section id="Acknowledgement">
+    <div class="title">Acknowledgement</div>
+    <div class="description">
+       Some materials in this project are provided by Kling AI Creative Partner (OrctonAI @OrctonAI, Flyover Base @FlyoverBase, Hideyuki Ashizawa @h_ashizawaJP, Eric Ker ​@EricKerArt, WuxIA Rocks ​@WuxiaRocks, ρŁ𝐀𝔰Ｍʘ @plasm0, Edwin Zeng ​​@doogyhatts, SEIIIRU​ @seiiiiiiiiiiru, fAIkout @fAIkout, The AI Filmmaking Advantage @iampauldonis, Karoline Georges @KarolineGeorges). We sincerely thank them for their creativity and kind authorization.
+    </div>
+    </section>
+
+    <section id="ethical-considerations">
+        <div class="title">Responsible Use Statement</div>
+        <div class="description">
+            The images and audios presented in these demos are either sourced from public domains or generated by our models. They are intended solely for showcasing the capabilities of our research framework—particularly, how it produces corresponding expressions and motions in response to diverse inputs, highlighting the framework’s technical strengths and academic value.If you have any concerns regarding the content, please feel free to contact us at liujiwen@kuaishou.com, and we will promptly remove the material if necessary.
+        </div>
+    </section>
+
+
+<section id="BibTeX">
+    <div class="title">BibTeX</div>
+    <pre style="text-align: left; margin-left: 0%; margin-right: 0%; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; line-height: 1.4;">
+<code>
+@article{liu2025omnidirector,
+  title={OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation},
+  author={Liu, Jiwen and Zhou, Yan and Li, Xiaohan and Fang, Zhixue and Zhang, Zhimin and Li, Shujuan and Meng, Zijie},
+  journal={arXiv preprint},
+  year={2026}
+}
+</code></pre>
+</section>
+
+
+<script>
+        // 去掉了 document.addEventListener('DOMContentLoaded', function() { 
+        const videos = document.querySelectorAll('.audio-control video');
+
+        // Password Protection
+        const overlay = document.getElementById('password-overlay');
+        const passInput = document.getElementById('password-input');
+        const passSubmit = document.getElementById('password-submit');
+        const passError = document.getElementById('password-error');
+
+        function checkPassword() {
+            if (passInput.value === 'klingcamera') {
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                passError.style.display = 'block';
+            }
+        }
+
+        if (overlay) {
+            passSubmit.addEventListener('click', checkPassword);
+            passInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkPassword();
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Click to play paradigm
+        videos.forEach(video => {
+            const parent = video.parentElement;
+            
+            const onClick = function() {
+                video.play();
+                // 播放后解绑点击，不再干扰用户
+                parent.removeEventListener('click', onClick);
+            };
+
+            parent.addEventListener('click', onClick);
+        });
+    </script>
+</body>
+</html>
