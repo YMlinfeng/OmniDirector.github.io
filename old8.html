@@ -7,8 +7,8 @@
     <meta http-equiv="Expires" content="0">
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>OmniDirector: General Multi-Shot Camera Cloning without Paired Data</title>
-    <meta name="description" content="OmniDirector: General Multi-Shot Camera Cloning without Paired Data">
+    <title>OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation</title>
+    <meta name="description" content="OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation">
     <meta name="keywords" content="Avatar, Animation, Cognitive Simulation, Multimodal, LLM">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
@@ -282,22 +282,12 @@
         <div class="content">
             <div style="text-align: center;">
             <h2 style="font-size: 3.2rem; font-weight: 400; color: #f7fcf9;">
-                OmniDirector: General Multi-Shot Camera Cloning without Paired Data
+                OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation
             </h2>
             <div style="margin-top: 30px;"></div>
 
             <span style="opacity: 0.6; font-size: 1.35rem;">
-                <a>Jiwen Liu</a><sup>*</sup>,
-                <a>Shujuan Li</a><sup>*</sup>,
-                <a>Zhixue Fang</a>,
-                <a>Xiaohan Li</a>,
-                <a>Yan Zhou</a><sup>†</sup>,
-                <a>Zijie Meng</a>,<br>
-                <a>Zhimin Zhang</a>,
-                <a>Yawen Luo</a>,
-                <a>Guoxin Zhang</a>,
-                <a>Yu-Shen Liu</a>,
-                <a>Pengfei Wan</a>
+                <a>Jiwen Liu</a>, <a>Yan Zhou</a>, <a>Xiaohan Li</a>, <a>Zhixue Fang</a>, <a>Zhimin Zhang</a>, <a>Shujuan Li</a>, <a>Zijie Meng</a>
             </span>
             <div style="margin-top: 20px;"></div>
             <div style="margin-top: 75px;"></div>
@@ -341,7 +331,7 @@
         <section id="Dynamic-Motion-Top">
             <div class="title">Dynamic Motion</div>
             <div class="category-desc fade-in-element">
-                OmniDirector masters extreme, high-difficulty camera maneuvers that go far beyond conventional pans and tilts. It can soar into the sky and dive underground, executing breathtaking aerial fly-throughs and dramatic descents while faithfully preserving scene geometry and visual fidelity.
+                <strong>[Module Overview]</strong> Dynamic motion breathes Hollywood-level vitality into generated visuals. The model seamlessly translates explicit trajectory constraints into breathtaking pans, tilts, and dolly shots without warping the fundamental geometry.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -362,7 +352,7 @@
         <section id="Multi-Shot-Top">
             <div class="title">Multi Shot</div>
             <div class="category-desc fade-in-element">
-                OmniDirector supports multi-shot generation, seamlessly producing coherent transitions and consistent content across multiple shots.
+                <strong>[Module Overview]</strong> Maintaining visual coherence across completely different camera angles is a notorious challenge. This module demonstrates the ability to execute sequential jump cuts while perfectly retaining the storyline's logical continuity.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -383,7 +373,7 @@
         <section id="Scene-Generalization-Top" style="margin-top: 100px;">
             <div class="title">Scene Generalization</div>
             <div class="category-desc fade-in-element">
-                Maintaining visual coherence across completely different camera angles is a notorious challenge. This module demonstrates the ability to execute sequential jump cuts while perfectly retaining the storyline's logical continuity.
+                <strong>[Module Overview]</strong> This section evaluates the model's zero-shot capability to generalize across diverse conceptual scenes. The system inherently adapts to drastic shifts in lighting, texturing, and geometry while enforcing rigorous camera motion constraints.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -404,7 +394,7 @@
         <section id="Special-Camera-Movement-Top">
             <div class="title">Special Camera Movement</div>
             <div class="category-desc fade-in-element">
-                OmniDirector supports special camera techniques, including the Hitchcock zoom (dolly zoom), bullet time, and lens distortion effects.
+                <strong>[Module Overview]</strong> Traversing through complex spatial occlusion involves synthesizing parts of the environment that are initially invisible. This section pushes the boundary of 3D geometry hallucination through orbiting and fly-through motions.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -579,7 +569,7 @@
             <img src="image/overall.png?v=2" alt="Pipeline" style="width: auto; max-width: 95%; height: auto; border-radius: 8px; display: inline-block;" />
         </div>
         <div class="description">
-            OmniDirector represents camera motion via a camera grid <em>G</em>, which is obtained by rendering the camera poses of a reference video <em>V</em> as movement within an empty 3D space. <strong><em>Middle</em></strong>: During training, the camera grid is injected into the MMDiT alongside other control signals via token concatenation. <strong><em>Bottom</em></strong>: At inference, a PE Agent harmoniously integrates various signals into the text prompt, achieving unified multi-signal control.
+        An MLLM Director first interprets multimodal instructions into high-level semantics and tells a storyline. Guided by this global planning, the first stage generates a blueprint video. In the second stage, keyframes are extracted from the blueprint and used as first–last frame conditions for parallel sub-clip generation, refining local details and dynamics to synthesize long-duration videos.
         </div>
     </section>
 
@@ -593,7 +583,7 @@
     <section id="ethical-considerations">
         <div class="title">Responsible Use Statement</div>
         <div class="description">
-            The images and audios presented in these demos are either sourced from public domains or generated by our models. They are intended solely for showcasing the capabilities of our research framework—particularly, how it produces corresponding expressions and motions in response to diverse inputs, highlighting the framework’s technical strengths and academic value.If you have any concerns regarding the content, please feel free to contact us at mengzijie03@kuaishou.com, and we will promptly remove the material if necessary.
+            The images and audios presented in these demos are either sourced from public domains or generated by our models. They are intended solely for showcasing the capabilities of our research framework—particularly, how it produces corresponding expressions and motions in response to diverse inputs, highlighting the framework’s technical strengths and academic value.If you have any concerns regarding the content, please feel free to contact us at liujiwen@kuaishou.com, and we will promptly remove the material if necessary.
         </div>
     </section>
 
@@ -602,12 +592,11 @@
         <pre style="text-align: left; margin-left: 0%; margin-right: 0%; white-space: pre-wrap; word-wrap: break-word; font-size: 14px; line-height: 1.4;">
 <code>
 @article{liu2025omnidirector,
-  title={OmniDirector: General Multi-Shot Camera Cloning without Paired Data},
-  author={Liu, Jiwen and Li, Shujuan and Fang, Zhixue and Li, Xiaohan and Zhou, Yan and Meng, Zijie and Zhang, Zhimin and Luo, Yawen and Zhang, Guoxin and Liu, Yu-Shen and Wan, Pengfei},
+  title={OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation},
+  author={Liu, Jiwen and Zhou, Yan and Li, Xiaohan and Fang, Zhixue and Zhang, Zhimin and Li, Shujuan and Meng, Zijie},
   journal={arXiv preprint},
   year={2026}
 }
-
 </code></pre>
     </section>
 
@@ -726,82 +715,9 @@
 
 
             /* ---------------------------------------------------- */
-            /* 3. 【极客级核心】带局部性空间缓存预测的单例按需加载  */
+            /* 3. 滚动监听与单例按需加载控制 (Observer + UI 渲染)   */
             /* ---------------------------------------------------- */
             window.activeVideo = null; 
-            
-            // 新增：维护智能预加载队列与缓存记录的全局变量
-            window.preloadedUrls = new Set();
-            window.preloadController = null;
-            window.preloadQueue = [];
-            window.isPreloading = false;
-
-            // 切断由于用户点击而失效的后台预加载流
-            function abortPreloading() {
-                if (window.preloadController) {
-                    window.preloadController.abort();
-                }
-                window.isPreloading = false;
-                window.preloadQueue = [];
-            }
-
-            // 【隐匿缓存机制的核心】在后台静默拉取文件，并强行将其转换为 Blob URL 放回对应元素的备用仓里
-            async function processNextPreload() {
-                if (!window.isPreloading || window.preloadQueue.length === 0) return;
-                const video = window.preloadQueue.shift();
-                
-                const originalSrc = video.dataset.src;
-
-                // 跳过已被标记缓存、已正在播放，或者已经被替换为 Blob URL 的文件
-                if (window.preloadedUrls.has(originalSrc) || video.getAttribute('src') || originalSrc.startsWith('blob:')) {
-                    processNextPreload();
-                    return;
-                }
-
-                try {
-                    const response = await fetch(originalSrc, { signal: window.preloadController.signal });
-                    if (!response.ok) throw new Error('Network response not ok');
-                    
-                    const blob = await response.blob();
-                    const objectUrl = URL.createObjectURL(blob);
-                    
-                    // 偷梁换柱：将源文件的 URL 替换为本地内存的 Blob URL。
-                    // 这样即使用户之后点过去，也绝对不会触发任何网络请求，直接内存秒开！
-                    video.dataset.src = objectUrl;
-                    window.preloadedUrls.add(originalSrc);
-
-                    processNextPreload(); // 递归，继续加载下一个
-                } catch (err) {
-                    // 若是被 abortPreloading 中断的，直接停机即可；若是网络波动等其他原因，直接跳过并处理下一个
-                    if (err.name !== 'AbortError') {
-                        processNextPreload(); 
-                    }
-                }
-            }
-
-            // 根据当前正在观看的视频，算出页面距离它“最近”的兄弟视频优先预加载
-            function startPreloading(centerVideo) {
-                abortPreloading();
-                window.preloadController = new AbortController();
-                window.isPreloading = true;
-
-                const allVideos = Array.from(document.querySelectorAll('video[data-src]'));
-                const centerIndex = allVideos.indexOf(centerVideo);
-                
-                if (centerIndex === -1) return;
-
-                // 核心算法：算出全屏所有视频的距离，越近的越先进入队列
-                window.preloadQueue = allVideos
-                    .filter(v => v !== centerVideo && !v.getAttribute('src') && !v.dataset.src.startsWith('blob:'))
-                    .sort((a, b) => {
-                        const distA = Math.abs(allVideos.indexOf(a) - centerIndex);
-                        const distB = Math.abs(allVideos.indexOf(b) - centerIndex);
-                        return distA - distB; 
-                    });
-
-                processNextPreload();
-            }
-
 
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -820,23 +736,25 @@
                                 
                                 const parent = video.parentElement;
                                 
+                                // 【核心改动】在 JS 层面为视频动态挂载一个居中的播放键层，保证完全不破坏原有 HTML 结构
                                 const playBtn = document.createElement('div');
                                 playBtn.className = 'custom-play-overlay';
                                 playBtn.innerHTML = '<i class="fas fa-play"></i>';
                                 parent.appendChild(playBtn);
                                 
                                 const onClick = function(e) {
+                                    // 防御策略：如果该视频处于轮播图的两侧或者隐藏位，不允许点击触发下载
                                     if (parent.classList.contains('pos-left') || parent.classList.contains('pos-right') || parent.classList.contains('pos-hidden')) {
                                         return;
                                     }
 
+                                    // 如果当前视频已经被加载(拥有src)，说明它已经成为了“真正的原声视频”并交还给了系统控制台
+                                    // 此时任何原声操作(点击暂停/调整进度/全屏等)我们一律不再进行拦截干预！
                                     if (video.getAttribute('src')) {
                                         return;
                                     }
 
-                                    // 【改动点1】任何用户主动点击，立刻中止后台所有潜行的预加载任务，将带宽100%让给当前点击事件！
-                                    abortPreloading();
-
+                                    // 切断上一个视频的状态
                                     if (window.activeVideo && window.activeVideo !== video) {
                                         window.activeVideo.pause();
                                         window.activeVideo.removeAttribute('src'); 
@@ -844,7 +762,8 @@
                                         window.activeVideo.parentElement.classList.remove('is-playing');
                                     }
                                     
-                                    video.src = video.dataset.src; // 若已被预加载，这行实际上等于赋值 blob: 内存地址，相当于秒开
+                                    // 拉起当前视频，并打上 is-playing 的状态从而隐藏掉大播放按钮
+                                    video.src = video.dataset.src;
                                     video.load();
                                     parent.classList.add('is-playing');
                                     
@@ -854,22 +773,6 @@
                                     }
                                     
                                     window.activeVideo = video;
-
-                                    // 【改动点2】当当前视频在底层加载出足够数据可以连续播放后，触发周边视频的静默预加载
-                                    const checkAndPreload = () => {
-                                        if (window.activeVideo === video) {
-                                            startPreloading(video);
-                                        }
-                                    };
-
-                                    if (video.readyState >= 3) { // HAVE_FUTURE_DATA 或更高
-                                        checkAndPreload();
-                                    } else {
-                                        video.addEventListener('canplaythrough', function handler() {
-                                            checkAndPreload();
-                                            video.removeEventListener('canplaythrough', handler);
-                                        });
-                                    }
                                 };
                                 
                                 parent.addEventListener('click', onClick);
