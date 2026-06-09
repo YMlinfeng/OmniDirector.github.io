@@ -259,7 +259,6 @@
     <div id="intro">
         <div class="content">
             <div style="text-align: center;">
-            <!-- <img src="image/logo.png" alt="Kling Logo" style="height: 80px; margin-bottom: 25px;" /> -->
             <h2 style="font-size: 3.2rem; font-weight: 400; color: #f7fcf9;">
                 OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation
             </h2>
@@ -306,13 +305,7 @@
     </div>
 
 
-    <!-- ========================================================== -->
-    <!-- 上半部分：优先展示四个大类的 3D 轮播图 (Top Carousel Section) -->
-    <!-- ========================================================== -->
-
-
     <div id="Top-Cases-Section">
-
         <section id="Dynamic-Motion-Top">
             <div class="title">Dynamic Motion</div>
             <div class="category-desc fade-in-element">
@@ -334,7 +327,6 @@
             </div>
         </section>
         
-        <!-- 2. Multi Shot Carousel -->
         <section id="Multi-Shot-Top">
             <div class="title">Multi Shot</div>
             <div class="category-desc fade-in-element">
@@ -356,7 +348,6 @@
             </div>
         </section>
 
-        <!-- 3. Scene Generalization Carousel -->
         <section id="Scene-Generalization-Top" style="margin-top: 100px;">
             <div class="title">Scene Generalization</div>
             <div class="category-desc fade-in-element">
@@ -378,10 +369,6 @@
             </div>
         </section>
 
-
-
-
-        <!-- 4. Special Camera Movement Carousel -->
         <section id="Special-Camera-Movement-Top">
             <div class="title">Special Camera Movement</div>
             <div class="category-desc fade-in-element">
@@ -404,24 +391,12 @@
         </section>
     </div>
 
-
-    <!-- ========================================================== -->
-    <!-- 中间过渡区：将用户引导至下半部分的探索区 -->
-    <!-- ========================================================== -->
     <div id="More-Cases-Section">
         <section id="More-Cases-Transition" class="fade-in-element" style="margin-top: 150px; text-align: center; margin-bottom: 50px;">
             <h2 style="font-size: 3rem; font-weight: 300; color: #fff; margin-bottom: 10px;">More Cases Exploration</h2>
             <p style="color: #999; font-size: 1.2rem;">Dive deeper into the generated multi-clip results with no bounding constraints.</p>
         </section>
 
-        
-        
-        
-        <!-- ========================================================== -->
-        <!-- 下半部分：严格两栏对齐、错落排版的无裁切密铺瀑布流 -->
-        <!-- ========================================================== -->
-        
-        <!-- 3. Dynamic Motion More -->
         <section id="Dynamic-Motion-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Dynamic Motion</div>
             <div class="peek-container">
@@ -445,7 +420,6 @@
             </div>
         </section>
 
-        <!-- 2. Multi Shot More -->
         <section id="Multi-Shot-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Multi Shot</div>
             <div class="peek-container">
@@ -475,12 +449,10 @@
             </div>
         </section>
 
-        <!-- 3. Scene Generalization More -->
         <section id="Scene-Generalization-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Scene Generalization</div>
             <div class="peek-container">
                 <div class="staggered-grid">
-                    <!-- 去除所有宽带强制（w-x），依托 Column 布局自动两列密铺 -->
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot295.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot313.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video></div></div>
@@ -513,7 +485,6 @@
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video></div></div>
                 </div>
-                <!-- 这个黑色蒙版带来了被削去一半的黑雾效果 -->
                 <div class="peek-overlay"></div>
             </div>
             <div class="show-more-wrapper fade-in-element">
@@ -521,7 +492,6 @@
             </div>
         </section>
         
-        <!-- 4. Special Camera Movement More -->
         <section id="Special-Camera-Movement-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Special Camera Movement</div>
             <div class="peek-container">
@@ -547,9 +517,6 @@
         </section>
     </div>
     
-    <!-- ========================================================== -->
-    <!-- 新增位移的 Comparisons: 4个项目的 3D 轮播结构 -->
-    <!-- ========================================================== -->
     <section id="Comparisons-More" style="margin-bottom: 80px;">
         <div class="title" style="font-size: 24px; color: #ccc;">More: Comparisons</div>
         <div class="category-desc fade-in-element">
@@ -558,7 +525,6 @@
         
         <div class="carousel-container fade-in-element">
             <div class="carousel-arrow left-arrow"><i class="fas fa-chevron-left"></i></div>
-            <!-- 4个比较视频，共用3D轮播逻辑 -->
             <div class="carousel-item">
                 <video playsinline controls loop preload="none" data-poster="image/1.jpg" data-src="camera/compare/1.mp4"></video>
             </div>
@@ -574,8 +540,6 @@
             <div class="carousel-arrow right-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
     </section>
-    
-    <!-- ================== 原样保留及新增模块的底部内容 ================== -->
     
     <section id="Pipeline">
         <div class="title">Pipeline</div>
@@ -614,13 +578,11 @@
 </code></pre>
     </section>
 
-    <!-- [新增版权声明] -->
     <div class="copyright-footer">
         <!-- &copy; 2026 Kuaishou Kling Team. All rights reserved. -->
     </div>
 
     <script>
-        // ================== 原有密码验证与交互功能 100% 保留 ==================
         const overlay = document.getElementById('password-overlay');
         const passInput = document.getElementById('password-input');
         const passSubmit = document.getElementById('password-submit');
@@ -635,10 +597,6 @@
             document.body.style.overflow = 'hidden';
         }
 
-
-        // ==============================================================================
-        // ====== 核心功能区（顶部导航 ScrollSpy、3D轮播图、截断遮罩展开、预加载）======
-        // ==============================================================================
         document.addEventListener('DOMContentLoaded', () => {
 
             /* ---------------------------------------------------- */
@@ -661,13 +619,11 @@
                 navSections.forEach(sec => {
                     if (!sec.element) return;
                     const rect = sec.element.getBoundingClientRect();
-                    // 当模块的顶部到达屏幕上方区域时，判定为正在阅读
                     if (rect.top <= 120 && rect.bottom > 120) {
                         current = sec.id;
                     }
                 });
 
-                // 触底时强制高亮最底部
                 if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 10) {
                     current = 'BibTeX';
                 }
@@ -688,7 +644,6 @@
                 let items = Array.from(container.querySelectorAll('.carousel-item'));
                 let states = [];
                 
-                // 动态分配状态：完美兼容前沿3视频与Comparisons的4视频
                 if (items.length === 3) {
                     states = ['pos-left', 'pos-center', 'pos-right'];
                 } else if (items.length === 4) {
@@ -701,17 +656,12 @@
                     });
                 }
 
-                // 算法逻辑：
-                // 显示下一项(即右侧项回到中心)，数组向右移 -> unshift(pop())
-                // 显示上一项(即左侧项回到中心)，数组向左移 -> push(shift())
                 function nextItem() { states.unshift(states.pop()); applyStates(); }
                 function prevItem() { states.push(states.shift()); applyStates(); }
 
-                // 绑定左右箭头点击 (阻止冒泡防误触)
                 container.querySelector('.left-arrow').addEventListener('click', (e) => { e.stopPropagation(); prevItem(); });
                 container.querySelector('.right-arrow').addEventListener('click', (e) => { e.stopPropagation(); nextItem(); });
 
-                // 极度鲁棒的点击逻辑：点左侧的元素就往左切，点右侧的就往右切
                 items.forEach(item => {
                     item.addEventListener('click', (e) => {
                         if (item.classList.contains('pos-left')) prevItem();
@@ -719,7 +669,6 @@
                     });
                 });
 
-                // 移动端及鼠标滑动支持
                 let startX = 0; let isDragging = false;
                 container.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; }, {passive: true});
                 container.addEventListener('touchend', e => {
@@ -744,58 +693,78 @@
 
 
             /* ---------------------------------------------------- */
-            /* 3. 滚动监听与懒加载控制 (Observer) - 性能优化版      */
+            /* 3. 滚动监听与单例按需加载控制 (Observer)             */
             /* ---------------------------------------------------- */
+            // 新增全局变量：维护当前正在播放/加载的唯一视频实例
+            window.activeVideo = null; 
+
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     const el = entry.target;
-                    
                     if (entry.isIntersecting) {
                         el.classList.add('visible'); 
 
-                        // 初始化时给src并设为仅请求metadata
-                        const videosToInit = el.querySelectorAll('video[data-src]');
-                        videosToInit.forEach(video => {
-                            video.src = video.dataset.src;
-                            video.poster = video.dataset.poster;
-                            video.removeAttribute('data-src');
-                            video.removeAttribute('data-poster');
-                            
-                            // [核心优化1] 阻止全量拉取，仅拉取头部数据，瞬间让页面成型并节省巨量带宽
-                            video.preload = "metadata"; 
+                        const videos = el.querySelectorAll('video[data-src]');
+                        videos.forEach(video => {
+                            // 【核心改动1】进入视口时：只赋海报图，绝对不赋予真正的视频 src！
+                            if (video.dataset.poster && !video.poster) {
+                                video.poster = video.dataset.poster;
+                            }
 
-                            const parent = video.parentElement;
-                            const onClick = function() {
-                                video.play();
-                                parent.removeEventListener('click', onClick);
-                            };
-                            parent.addEventListener('click', onClick);
-                        });
-                        
-                        // [核心优化2] 如果视频之前是播放状态，划回视口时自动恢复播放
-                        const allVideos = el.querySelectorAll('video');
-                        allVideos.forEach(video => {
-                            if (video.dataset.wasPlaying === 'true') {
-                                video.play().catch(()=>{}).then(() => video.dataset.wasPlaying = 'false');
+                            // 【核心改动2】将点击事件只挂载一次，实现极速切断并单例加载
+                            if (!video.dataset.clickBinded) {
+                                video.dataset.clickBinded = "true";
+                                
+                                const parent = video.parentElement;
+                                const onClick = function() {
+                                    // 1. 如果当前有正在加载或播放的其它视频，立刻一刀切断！
+                                    if (window.activeVideo && window.activeVideo !== video) {
+                                        window.activeVideo.pause();
+                                        window.activeVideo.removeAttribute('src'); // 置空 src 以彻底打断原有底层网络请求
+                                        window.activeVideo.load(); // 强制刷新内核状态，让上个视频瞬间变回纯图片
+                                    }
+                                    
+                                    // 2. 将当前被点击的这个视频的源连接塞入，此时由于带宽100%空闲，将瞬间拉起并播放
+                                    if (!video.getAttribute('src')) {
+                                        video.src = video.dataset.src;
+                                        video.load();
+                                    }
+                                    
+                                    // 3. 唤起播放
+                                    const playPromise = video.play();
+                                    if (playPromise !== undefined) {
+                                        playPromise.catch(e => { console.warn("Auto-play prevented", e); });
+                                    }
+                                    
+                                    window.activeVideo = video;
+                                };
+                                
+                                parent.addEventListener('click', onClick);
+
+                                // 兼容性防漏逻辑：如果用户精准点击原生控件的“播放键”触发加载
+                                video.addEventListener('play', (e) => {
+                                    if (window.activeVideo && window.activeVideo !== video) {
+                                        window.activeVideo.pause();
+                                        window.activeVideo.removeAttribute('src');
+                                        window.activeVideo.load();
+                                    }
+                                    if (!video.getAttribute('src')) {
+                                        video.src = video.dataset.src;
+                                        video.load();
+                                        video.play();
+                                    }
+                                    window.activeVideo = video;
+                                });
                             }
                         });
-
                     } else {
+                        // 离开视口时淡出
                         el.classList.remove('visible');
-                        
-                        // [核心优化3] 视频离开视口时自动暂停，释放显卡硬解码器并大幅降低内存占用！
-                        const allVideos = el.querySelectorAll('video');
-                        allVideos.forEach(video => {
-                            if (!video.paused) {
-                                video.dataset.wasPlaying = 'true';
-                                video.pause();
-                            }
-                        });
                     }
                 });
-            // [核心优化4] 扩大探测阈值(Margin)，使元素还在屏幕外 20% 时就开始加载海报图，彻底实现"瞬间加载"体验
-            }, { root: null, rootMargin: "20% 0px 20% 0px", threshold: 0.01 }); 
+            }, { root: null, rootMargin: "-5% 0px -5% 0px", threshold: 0.1 });
 
+            // 将瀑布流中的所有错落元素以及轮播元素扔进监控器
             document.querySelectorAll('.fade-in-element').forEach(el => fadeObserver.observe(el));
 
 
@@ -821,34 +790,14 @@
 
 
             /* ---------------------------------------------------- */
-            /* 5. 后台静默预加载缓存队列 (修复网络堵塞版)           */
+            /* 5. 后台静默预加载缓存队列 (已遵照领导要求停用移除)    */
             /* ---------------------------------------------------- */
+            // [卡顿根源2] 这里原本有偷偷下载视频的定时器逻辑，为了彻底避免拥堵已将其注释停用。
+            /*
             const allHiddenVideos = Array.from(document.querySelectorAll('video[data-src]'));
             let currentLoadIndex = 0;
-
-            function processBackgroundLoad() {
-                if (currentLoadIndex >= allHiddenVideos.length) return; 
-
-                const video = allHiddenVideos[currentLoadIndex];
-                const targetPoster = video.dataset.poster;
-                
-                // [核心优化5] 绝对不能用 fetch 请求完整视频文件！这会导致并发数爆满，带宽彻底瘫痪
-                // 这里改为极速静默预加载所有“视频海报图(poster)”。给用户造成“视频已经瞬间加载完毕”的错觉，实际视频等到点击时才去缓冲。
-                if (targetPoster) {
-                    const img = new Image();
-                    img.src = targetPoster;
-                }
-
-                currentLoadIndex++;
-                // 因为改成了仅预加载图片，速度可以缩短到 100ms
-                setTimeout(processBackgroundLoad, 100);
-            }
-
-            if (window.requestIdleCallback) {
-                requestIdleCallback(() => { setTimeout(processBackgroundLoad, 1500); });
-            } else {
-                setTimeout(processBackgroundLoad, 2000); 
-            }
+            function processBackgroundLoad() { ... }
+            */
 
         });
     </script>
