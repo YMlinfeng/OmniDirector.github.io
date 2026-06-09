@@ -1,5 +1,5 @@
 #!/bin/bash
-find camera/compare -name "*.mp4" | while read file; do
+find camera -name "*.mp4" | while read file; do
     echo "Compressing $file..."
     ffmpeg -y -i "$file" -vcodec libx264 -vf scale=800:-2 -crf 28 -preset fast -c:a copy -movflags +faststart "${file}.tmp.mp4" -loglevel error </dev/null
     if [ $? -eq 0 ]; then
