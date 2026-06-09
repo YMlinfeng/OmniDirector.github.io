@@ -744,26 +744,23 @@
 
 
             /* ---------------------------------------------------- */
-            /* 3. 滚动监听与懒加载控制 (Observer) - 性能优化版      */
+            /* 3. 滚动监听与懒加载控制 (Observer)                   */
             /* ---------------------------------------------------- */
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     const el = entry.target;
-                    
                     if (entry.isIntersecting) {
                         el.classList.add('visible'); 
 
-                        // 初始化时给src并设为仅请求metadata
-                        const videosToInit = el.querySelectorAll('video[data-src]');
-                        videosToInit.forEach(video => {
+                        const videos = el.querySelectorAll('video[data-src]');
+                        videos.forEach(video => {
                             video.src = video.dataset.src;
                             video.poster = video.dataset.poster;
                             video.removeAttribute('data-src');
                             video.removeAttribute('data-poster');
-                            
-                            // [核心优化1] 阻止全量拉取，仅拉取头部数据，瞬间让页面成型并节省巨量带宽
-                            video.preload = "metadata"; 
+                            video.load(); 
 
+                            // 为视频重新绑定点击播放
                             const parent = video.parentElement;
                             const onClick = function() {
                                 video.play();
@@ -771,31 +768,14 @@
                             };
                             parent.addEventListener('click', onClick);
                         });
-                        
-                        // [核心优化2] 如果视频之前是播放状态，划回视口时自动恢复播放
-                        const allVideos = el.querySelectorAll('video');
-                        allVideos.forEach(video => {
-                            if (video.dataset.wasPlaying === 'true') {
-                                video.play().catch(()=>{}).then(() => video.dataset.wasPlaying = 'false');
-                            }
-                        });
-
                     } else {
+                        // 离开视口时淡出
                         el.classList.remove('visible');
-                        
-                        // [核心优化3] 视频离开视口时自动暂停，释放显卡硬解码器并大幅降低内存占用！
-                        const allVideos = el.querySelectorAll('video');
-                        allVideos.forEach(video => {
-                            if (!video.paused) {
-                                video.dataset.wasPlaying = 'true';
-                                video.pause();
-                            }
-                        });
                     }
                 });
-            // [核心优化4] 扩大探测阈值(Margin)，使元素还在屏幕外 20% 时就开始加载海报图，彻底实现"瞬间加载"体验
-            }, { root: null, rootMargin: "20% 0px 20% 0px", threshold: 0.01 }); 
+            }, { root: null, rootMargin: "-5% 0px -5% 0px", threshold: 0.1 });
 
+            // 将瀑布流中的所有错落元素以及轮播元素扔进监控器
             document.querySelectorAll('.fade-in-element').forEach(el => fadeObserver.observe(el));
 
 
@@ -821,7 +801,7 @@
 
 
             /* ---------------------------------------------------- */
-            /* 5. 后台静默预加载缓存队列 (修复网络堵塞版)           */
+            /* 5. 后台静默预加载缓存队列 (极限压榨用户驻留时间)     */
             /* ---------------------------------------------------- */
             const allHiddenVideos = Array.from(document.querySelectorAll('video[data-src]'));
             let currentLoadIndex = 0;
@@ -830,18 +810,14 @@
                 if (currentLoadIndex >= allHiddenVideos.length) return; 
 
                 const video = allHiddenVideos[currentLoadIndex];
-                const targetPoster = video.dataset.poster;
+                const targetSrc = video.dataset.src;
                 
-                // [核心优化5] 绝对不能用 fetch 请求完整视频文件！这会导致并发数爆满，带宽彻底瘫痪
-                // 这里改为极速静默预加载所有“视频海报图(poster)”。给用户造成“视频已经瞬间加载完毕”的错觉，实际视频等到点击时才去缓冲。
-                if (targetPoster) {
-                    const img = new Image();
-                    img.src = targetPoster;
+                if (targetSrc) {
+                    fetch(targetSrc, { mode: 'no-cors', priority: 'low' }).catch(() => {});
                 }
 
                 currentLoadIndex++;
-                // 因为改成了仅预加载图片，速度可以缩短到 100ms
-                setTimeout(processBackgroundLoad, 100);
+                setTimeout(processBackgroundLoad, 1500);
             }
 
             if (window.requestIdleCallback) {
