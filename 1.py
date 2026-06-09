@@ -4,7 +4,7 @@ import shutil
 
 # ===== 配置区 =====
 BASE_DIR = "/Users/mengzijie/Downloads/project/KlingCameraControl.github.io/camera"
-DEST_DIR = "/Users/mengzijie/Downloads/project/KlingCameraControl.github.io/camera_wo"
+DEST_DIR = "/Users/mengzijie/Downloads/project/KlingCameraControl.github.io/camera_wo1"
 SUFFIX = "_labeled"
 
 # 支持的扩展名（图片 + 视频），小写
