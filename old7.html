@@ -96,31 +96,9 @@
         .audio-control { transition: transform 0.5s, box-shadow 0.5s; position: relative; }
         .audio-control video { border-radius: 12px; display: block; width: 100%; }
         .prompt-wrap { position: relative; }
-        
-        /* ================== [核心改动] 播放键 UI 优化 ================== */
-        /* 强制隐藏未加载 src 时的底侧原生失效控件，避免用户误触无响应 */
-        video:not([src])::-webkit-media-controls { display: none !important; }
-        
-        /* 只有当视频有了 src 并处于 .is-playing 状态时，悬停才显示系统原生控制条 */
-        .prompt-wrap.is-playing:hover video::-webkit-media-controls { display: flex !important; }
+        .prompt-wrap video::-webkit-media-controls { display: none !important; }
+        .prompt-wrap:hover video::-webkit-media-controls { display: flex !important; }
 
-        /* 全新的自定义中心播放按钮容器 */
-        .custom-play-overlay {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 70px; height: 70px; background: rgba(0,0,0,0.6); border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 2.2rem; color: #fff; pointer-events: none; opacity: 0;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10;
-            backdrop-filter: blur(4px); padding-left: 6px; /* 让播放三角在视觉上完全居中 */
-        }
-        
-        /* 鼠标悬停时显示中心大播放键（前提是没有处于 is-playing 播放状态） */
-        .carousel-item:not(.is-playing):hover .custom-play-overlay,
-        .prompt-wrap:not(.is-playing):hover .custom-play-overlay {
-            opacity: 1; transform: translate(-50%, -50%) scale(1.15);
-            color: #74ff52; box-shadow: 0 0 25px rgba(116, 255, 82, 0.4);
-        }
-        /* ============================================================= */
 
         /* ================== 修改：全局顶部横向常驻导航栏 ================== */
         #top-nav {
@@ -715,8 +693,9 @@
 
 
             /* ---------------------------------------------------- */
-            /* 3. 滚动监听与单例按需加载控制 (Observer + UI 渲染)   */
+            /* 3. 滚动监听与单例按需加载控制 (Observer)             */
             /* ---------------------------------------------------- */
+            // 新增全局变量：维护当前正在播放/加载的唯一视频实例
             window.activeVideo = null; 
 
             const fadeObserver = new IntersectionObserver((entries, observer) => {
@@ -727,63 +706,65 @@
 
                         const videos = el.querySelectorAll('video[data-src]');
                         videos.forEach(video => {
+                            // 【核心改动1】进入视口时：只赋海报图，绝对不赋予真正的视频 src！
                             if (video.dataset.poster && !video.poster) {
                                 video.poster = video.dataset.poster;
                             }
 
+                            // 【核心改动2】将点击事件只挂载一次，实现极速切断并单例加载
                             if (!video.dataset.clickBinded) {
                                 video.dataset.clickBinded = "true";
                                 
                                 const parent = video.parentElement;
-                                
-                                // 【核心改动】在 JS 层面为视频动态挂载一个居中的播放键层，保证完全不破坏原有 HTML 结构
-                                const playBtn = document.createElement('div');
-                                playBtn.className = 'custom-play-overlay';
-                                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                                parent.appendChild(playBtn);
-                                
-                                const onClick = function(e) {
-                                    // 防御策略：如果该视频处于轮播图的两侧或者隐藏位，不允许点击触发下载
-                                    if (parent.classList.contains('pos-left') || parent.classList.contains('pos-right') || parent.classList.contains('pos-hidden')) {
-                                        return;
-                                    }
-
-                                    // 如果当前视频已经被加载(拥有src)，说明它已经成为了“真正的原声视频”并交还给了系统控制台
-                                    // 此时任何原声操作(点击暂停/调整进度/全屏等)我们一律不再进行拦截干预！
-                                    if (video.getAttribute('src')) {
-                                        return;
-                                    }
-
-                                    // 切断上一个视频的状态
+                                const onClick = function() {
+                                    // 1. 如果当前有正在加载或播放的其它视频，立刻一刀切断！
                                     if (window.activeVideo && window.activeVideo !== video) {
                                         window.activeVideo.pause();
-                                        window.activeVideo.removeAttribute('src'); 
-                                        window.activeVideo.load(); 
-                                        window.activeVideo.parentElement.classList.remove('is-playing');
+                                        window.activeVideo.removeAttribute('src'); // 置空 src 以彻底打断原有底层网络请求
+                                        window.activeVideo.load(); // 强制刷新内核状态，让上个视频瞬间变回纯图片
                                     }
                                     
-                                    // 拉起当前视频，并打上 is-playing 的状态从而隐藏掉大播放按钮
-                                    video.src = video.dataset.src;
-                                    video.load();
-                                    parent.classList.add('is-playing');
+                                    // 2. 将当前被点击的这个视频的源连接塞入，此时由于带宽100%空闲，将瞬间拉起并播放
+                                    if (!video.getAttribute('src')) {
+                                        video.src = video.dataset.src;
+                                        video.load();
+                                    }
                                     
+                                    // 3. 唤起播放
                                     const playPromise = video.play();
                                     if (playPromise !== undefined) {
-                                        playPromise.catch(err => { console.warn("Auto-play prevented", err); });
+                                        playPromise.catch(e => { console.warn("Auto-play prevented", e); });
                                     }
                                     
                                     window.activeVideo = video;
                                 };
                                 
                                 parent.addEventListener('click', onClick);
+
+                                // 兼容性防漏逻辑：如果用户精准点击原生控件的“播放键”触发加载
+                                video.addEventListener('play', (e) => {
+                                    if (window.activeVideo && window.activeVideo !== video) {
+                                        window.activeVideo.pause();
+                                        window.activeVideo.removeAttribute('src');
+                                        window.activeVideo.load();
+                                    }
+                                    if (!video.getAttribute('src')) {
+                                        video.src = video.dataset.src;
+                                        video.load();
+                                        video.play();
+                                    }
+                                    window.activeVideo = video;
+                                });
                             }
                         });
                     } else {
+                        // 离开视口时淡出
                         el.classList.remove('visible');
                     }
                 });
             }, { root: null, rootMargin: "-5% 0px -5% 0px", threshold: 0.1 });
 
+            // 将瀑布流中的所有错落元素以及轮播元素扔进监控器
             document.querySelectorAll('.fade-in-element').forEach(el => fadeObserver.observe(el));
 
 
@@ -806,6 +787,17 @@
                     }
                 });
             });
+
+
+            /* ---------------------------------------------------- */
+            /* 5. 后台静默预加载缓存队列 (已遵照领导要求停用移除)    */
+            /* ---------------------------------------------------- */
+            // [卡顿根源2] 这里原本有偷偷下载视频的定时器逻辑，为了彻底避免拥堵已将其注释停用。
+            /*
+            const allHiddenVideos = Array.from(document.querySelectorAll('video[data-src]'));
+            let currentLoadIndex = 0;
+            function processBackgroundLoad() { ... }
+            */
 
         });
     </script>
