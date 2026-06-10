@@ -264,6 +264,15 @@
         <a href="#BibTeX" class="top-nav-link">BibTeX</a>
     </nav>
 
+    <!-- 顶部密码浮层 -->
+    <!-- <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #17181a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <img src="image/logo.png" alt="Logo" style="height: 60px; margin-bottom: 20px;" />
+        <h2 style="color: white; margin-bottom: 20px; font-weight: 300;">Private Debug Mode</h2>
+        <input type="password" id="password-input" placeholder="Enter password" style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #333; margin-bottom: 10px; background: #222; color: #fff; width: 250px; text-align: center; outline: none;">
+        <button id="password-submit" style="padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; background: #fff; color: #000; border: none; font-weight: bold; width: 250px; transition: background 0.3s;">Verify</button>
+        <p id="password-error" style="color: #ff5252; display: none; margin-top: 10px;">Incorrect password</p>
+    </div> -->
+
     <!-- Intro 及大标题 -->
     <div id="intro">
         <div class="content">
@@ -555,16 +564,16 @@
         <div class="carousel-container fade-in-element">
             <div class="carousel-arrow left-arrow"><i class="fas fa-chevron-left"></i></div>
             <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/compare/2.webp" data-src="camera/compare/2.mp4"></video>
+                <video playsinline controls loop preload="none" data-poster="image/2.webp" data-src="camera/compare/2.mp4"></video>
             </div>
             <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/compare/3.webp" data-src="camera/compare/3.mp4"></video>
+                <video playsinline controls loop preload="none" data-poster="image/3.webp" data-src="camera/compare/3.mp4"></video>
             </div>
             <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/compare/4.webp" data-src="camera/compare/4.mp4"></video>
+                <video playsinline controls loop preload="none" data-poster="image/4.webp" data-src="camera/compare/4.mp4"></video>
             </div>
             <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="camera/compare/1.webp" data-src="camera/compare/1.mp4"></video>
+                <video playsinline controls loop preload="none" data-poster="image/1.webp" data-src="camera/compare/1.mp4"></video>
             </div>
             <div class="carousel-arrow right-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
@@ -645,6 +654,7 @@
 
             window.addEventListener('scroll', () => {
                 let current = 'intro';
+                
                 navSections.forEach(sec => {
                     if (!sec.element) return;
                     const rect = sec.element.getBoundingClientRect();
@@ -787,29 +797,29 @@
                 window.preloadQueue = [];
             }
 
-            // 【隐匿缓存机制的核心】利用 HTTP Range 请求预拉取视频头部，存入浏览器原生磁盘缓存
+            // 【隐匿缓存机制的核心】在后台静默拉取文件，并强行将其转换为 Blob URL 放回对应元素的备用仓里
             async function processNextPreload() {
                 if (!window.isPreloading || window.preloadQueue.length === 0) return;
                 const video = window.preloadQueue.shift();
                 
                 const originalSrc = video.dataset.src;
 
-                // 跳过已被标记缓存、已正在播放的文件
-                if (window.preloadedUrls.has(originalSrc) || video.getAttribute('src')) {
+                // 跳过已被标记缓存、已正在播放，或者已经被替换为 Blob URL 的文件
+                if (window.preloadedUrls.has(originalSrc) || video.getAttribute('src') || originalSrc.startsWith('blob:')) {
                     processNextPreload();
                     return;
                 }
 
                 try {
-                    // 只拉取视频头部数据（前 500KB），自动存入浏览器磁盘缓存
-                    const response = await fetch(originalSrc, { 
-                        signal: window.preloadController.signal,
-                        headers: { 'Range': 'bytes=0-500000' }
-                    });
+                    const response = await fetch(originalSrc, { signal: window.preloadController.signal });
+                    if (!response.ok) throw new Error('Network response not ok');
                     
-                    if (!response.ok && response.status !== 206) throw new Error('Network response not ok');
+                    const blob = await response.blob();
+                    const objectUrl = URL.createObjectURL(blob);
                     
-                    // 标记该 URL 已经预热过，不需要转 blob，也不需要修改 dataset.src
+                    // 偷梁换柱：将源文件的 URL 替换为本地内存的 Blob URL。
+                    // 这样即使用户之后点过去，也绝对不会触发任何网络请求，直接内存秒开！
+                    video.dataset.src = objectUrl;
                     window.preloadedUrls.add(originalSrc);
 
                     processNextPreload(); // 递归，继续加载下一个
@@ -842,9 +852,9 @@
                     orderedVideos.push(allVideos[i]);
                 }
 
-                // 筛选掉已经拥有 src 、已被缓存的视频
+                // 筛选掉已经拥有 src 或者已经被转化为本地 blob、已被缓存的视频
                 window.preloadQueue = orderedVideos.filter(v => 
-                    !v.getAttribute('src') && !window.preloadedUrls.has(v.dataset.src)
+                    !v.getAttribute('src') && !v.dataset.src.startsWith('blob:') && !window.preloadedUrls.has(v.dataset.src)
                 );
 
                 processNextPreload();
@@ -891,7 +901,7 @@
                                         window.activeVideo.parentElement.classList.remove('is-playing');
                                     }
                                     
-                                    video.src = video.dataset.src; // 若已在后台 fetch 过，浏览器会自动命中 206 磁盘缓存，相当于秒开
+                                    video.src = video.dataset.src; // 若已被预加载，这行实际上等于赋值 blob: 内存地址，相当于秒开
                                     video.load();
                                     parent.classList.add('is-playing');
                                     
