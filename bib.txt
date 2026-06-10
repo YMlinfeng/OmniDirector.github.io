@@ -1,6 +1,6 @@
 @article{liu2025omnidirector,
-  title={OmniDirector: Equipping Video Generation Models with Camera Control through General and Scalable Visual Representation},
-  author={Liu, Jiwen and Zhou, Yan and Li, Xiaohan and Fang, Zhixue and Zhang, Zhimin and Li, Shujuan and Meng, Zijie},
+  title={OmniDirector: General Multi-Shot Camera Cloning without Paired Data},
+  author={Liu, Jiwen and Li, Shujuan and Fang, Zhixue and Li, Xiaohan and Zhou, Yan and Meng, Zijie and Zhang, Zhimin and Luo, Yawen and Zhang, Guoxin and Liu, Yu-Shen and Wan, Pengfei},
   journal={arXiv preprint},
   year={2026}
 }
