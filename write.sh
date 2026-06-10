@@ -21,7 +21,7 @@ find "$BASE_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" 
     [[ "$name" == *"$SUFFIX" ]] && continue          # 跳过已处理的
     out="$dir/${name}${SUFFIX}.${ext}"
     echo "图片: $file"
-    ffmpeg -y -loglevel error -i "$file" -vf "$VF" "$out"
+    ffmpeg -nostdin -y -loglevel error -i "$file" -vf "$VF" "$out"
 done
 
 # ===== 处理视频 =====
@@ -32,7 +32,7 @@ find "$BASE_DIR" -type f \( -iname "*.mp4" -o -iname "*.mov" -o -iname "*.avi" -
     out="$dir/${name}${SUFFIX}.${ext}"
     echo "视频: $file"
     # 保留原音频，重新编码视频
-    ffmpeg -y -loglevel error -i "$file" -vf "$VF" -c:a copy "$out"
+    ffmpeg -nostdin -y -loglevel error -i "$file" -vf "$VF" -c:a copy "$out"
 done
 
 echo "全部完成！"
