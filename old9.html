@@ -98,29 +98,35 @@
         .prompt-wrap { position: relative; }
         
         /* ================== [核心改动] 播放键 UI 优化 ================== */
+        /* 强制隐藏未加载 src 时的底侧原生失效控件，避免用户误触无响应 */
         video:not([src])::-webkit-media-controls { display: none !important; }
+        
+        /* 只有当视频有了 src 并处于 .is-playing 状态时，悬停才显示系统原生控制条 */
         .prompt-wrap.is-playing:hover video::-webkit-media-controls { display: flex !important; }
 
+        /* 全新的自定义中心播放按钮容器 */
         .custom-play-overlay {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 70px; height: 70px; background: rgba(0,0,0,0.6); border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             font-size: 2.2rem; color: #fff; pointer-events: none; opacity: 0;
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10;
-            backdrop-filter: blur(4px); padding-left: 6px;
+            backdrop-filter: blur(4px); padding-left: 6px; /* 让播放三角在视觉上完全居中 */
         }
         
+        /* 鼠标悬停时显示中心大播放键（前提是没有处于 is-playing 播放状态） */
         .carousel-item:not(.is-playing):hover .custom-play-overlay,
         .prompt-wrap:not(.is-playing):hover .custom-play-overlay {
             opacity: 1; transform: translate(-50%, -50%) scale(1.15);
             color: #74ff52; box-shadow: 0 0 25px rgba(116, 255, 82, 0.4);
         }
+        /* ============================================================= */
 
         /* ================== 修改：全局顶部横向常驻导航栏 ================== */
         #top-nav {
             position: fixed; top: 0; left: 0; width: 100%; height: 60px;
             background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(15px);
-            z-index: 99998;
+            z-index: 99998; /* 保证在其上方的只有密码层 */
             display: flex; justify-content: center; align-items: center; gap: 35px;
             border-bottom: 1px solid #333; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
@@ -139,11 +145,13 @@
             #top-nav::-webkit-scrollbar { display: none; }
         }
 
+        /* 顶部下拉菜单的滚动条样式 */
         #dropdown-menu-research::-webkit-scrollbar { width: 4px; }
         #dropdown-menu-research::-webkit-scrollbar-thumb { background: #888; border-radius: 2px; }
 
         .copyright-footer { text-align: center; color: #666; padding: 60px 0 40px; font-size: 0.9rem; border-top: 1px solid #222; margin-top: 100px; }
 
+        /* ================== 核心升级：兼容 4项 的 3D 轮播组件 ================== */
         .category-desc {
             font-size: 1.15rem; line-height: 1.8; color: #d1d1d1;
             margin-bottom: 20px; padding: 20px 30px;
@@ -164,9 +172,11 @@
             background: #000; will-change: transform, opacity;
         }
 
+        /* 选中放大 1.25 倍，极其震撼 */
         .carousel-item.pos-center { transform: translateX(0) scale(1.25); opacity: 1; z-index: 3; filter: none; }
         .carousel-item.pos-left { transform: translateX(-65%) scale(0.7); opacity: 0.85; z-index: 1; filter: none; cursor: pointer; }
         .carousel-item.pos-right { transform: translateX(65%) scale(0.7); opacity: 0.85; z-index: 1; filter: none; cursor: pointer; }
+        /* 针对 4项 视频时的隐藏项 */
         .carousel-item.pos-hidden { transform: translateX(0) scale(0.5); opacity: 0; z-index: 0; pointer-events: none; visibility: hidden; }
         
         .carousel-item.pos-left video, .carousel-item.pos-right video, .carousel-item.pos-hidden video { pointer-events: none; }
@@ -178,40 +188,31 @@
             padding: 20px; transition: all 0.3s;
         }
         .carousel-arrow:hover { color: #74ff52; transform: translateY(-50%) scale(1.2); }
-        .left-arrow { left: 10%; }
+        .left-arrow { left: 10%; } /* 按照要求箭头向内收 */
         .right-arrow { right: 10%; }
 
 
-        /* ================== 核心升级：严格按左右顺序分配的瀑布流 ================== */
+        /* ================== 核心升级：严格两栏密铺且悬停无缝外溢的瀑布流 ================== */
         
         .staggered-grid {
-            display: flex;
-            align-items: flex-start;
+            column-count: 2; /* 严格双栏密铺算法 */
             column-gap: 20px;
             padding: 30px 0;
             width: 100%;
         }
-        
-        .masonry-col {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: calc(50% - 10px);
-        }
+        @media (max-width: 768px) { .staggered-grid { column-count: 1; } }
 
-        @media (max-width: 768px) { 
-            .staggered-grid { flex-direction: column; } 
-            .masonry-col { width: 100%; }
-        }
-
+        /* 确保视频本身保留原生比例，不被截取！ */
         .staggered-item video { width: 100%; height: auto !important; border-radius: 12px; display: block; }
 
         .staggered-item {
-            position: relative; z-index: 1; width: 100%;
+            break-inside: avoid; /* 防止在两列之间折断 */
+            margin-bottom: 20px;
+            position: relative; z-index: 1;
             transition: z-index 0s, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
+        /* 悬停极大化特效，并且 z-index 设为 100 保证绝对在最顶层遮挡一切 */
         .staggered-item:hover { z-index: 100; }
         .staggered-item .audio-control { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s; position: relative; }
         .staggered-item:hover .audio-control { 
@@ -221,9 +222,12 @@
 
         /* ================== “半遮面偷窥” CSS 高度截断特效与悬停防裁切魔术 ================== */
         .peek-container {
+            /* 基础展示高度加一点顶部余量 */
             max-height: 500px; 
             overflow: hidden; position: relative;
             transition: max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            
+            /* [黑魔法] 核心解法：通过负边距将盒子向外拓宽100px，让 overflow:hidden 的裁切线退后，防止视频放大时被截断 */
             padding: 40px 100px 0 100px;
             margin: -40px -100px 0 -100px;
         }
@@ -265,13 +269,13 @@
     </nav>
 
     <!-- 顶部密码浮层 -->
-    <!-- <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #17181a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #17181a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <img src="image/logo.png" alt="Logo" style="height: 60px; margin-bottom: 20px;" />
         <h2 style="color: white; margin-bottom: 20px; font-weight: 300;">Private Debug Mode</h2>
         <input type="password" id="password-input" placeholder="Enter password" style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #333; margin-bottom: 10px; background: #222; color: #fff; width: 250px; text-align: center; outline: none;">
         <button id="password-submit" style="padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; background: #fff; color: #000; border: none; font-weight: bold; width: 250px; transition: background 0.3s;">Verify</button>
         <p id="password-error" style="color: #ff5252; display: none; margin-top: 10px;">Incorrect password</p>
-    </div> -->
+    </div>
 
     <!-- Intro 及大标题 -->
     <div id="intro">
@@ -306,6 +310,17 @@
                     <a href="javascript:void(0);" class="external-link button is-normal is-rounded light-btn btn-font" id="nav-button-research">
                         <span class="icon"><i class="fas fa-microscope"></i></span><span class="sansfont">More Research</span>
                     </a>
+                    <!-- <div id="dropdown-menu-research" class="dropdown-menu" style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background-color:#333; border-radius:6px; padding:4px 0; margin-top:6px; min-width:240px; max-width:280px; max-height:190px; overflow-y:auto; font-size:14px; z-index:3000; white-space:nowrap; box-shadow: 0 10px 25px rgba(0,0,0,0.8);">
+                        <a href="https://huggingface.co/papers/2603.03160" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">Kling-MotionControl</a>
+                        <a href="https://camclonemaster.github.io/" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">CamCloneMaster</a>
+                        <a href="https://ziqiaopeng.github.io/OmniSync/" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">OmniSync</a>
+                        <a href="https://huggingface.co/papers/2602.03796" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">3DiMo</a>
+                        <a href="https://klingavatar.github.io/" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">Kling-Avatar</a>
+                        <a href="https://arxiv.org/abs/2512.13313" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">Kling-Avatar 2.0</a>
+                        <a href="https://vincenthu19.github.io/GGTalker/" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">GGTalker</a>
+                        <a href="https://arxiv.org/abs/2512.13313" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">ARGUS</a>
+                        <a href="https://vincenthu19.github.io/GGTalker/" target="_blank" class="dropdown-item" style="display:block; padding:10px 15px; color:white; text-decoration:none;">GGTalker</a>
+                    </div> -->
                     <div id="dropdown-menu-research" class="dropdown-menu" style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background-color:#333; border-radius:6px; padding:4px 0; margin-top:6px; min-width:240px; max-width:280px; max-height:140px; overflow-y:auto; font-size:14px; z-index:3000; white-space:nowrap; box-shadow: 0 10px 25px rgba(0,0,0,0.8);">
                         <a href="https://huggingface.co/papers/2603.03160" target="_blank" class="dropdown-item" style="display:block; padding:6px 15px; color:white; text-decoration:none;">Kling-MotionControl</a>
                         <a href="https://camclonemaster.github.io/" target="_blank" class="dropdown-item" style="display:block; padding:6px 15px; color:white; text-decoration:none;">CamCloneMaster</a>
@@ -336,7 +351,7 @@
         <section id="Dynamic-Motion-Top">
             <div class="title">Dynamic Motion</div>
             <div class="category-desc fade-in-element">
-                OmniDirector masters extreme, high-difficulty camera maneuvers that go far beyond conventional pans and tilts. It can soar into the sky and dive underground, executing breathtaking aerial fly-throughs and dramatic descents while faithfully preserving scene geometry and visual fidelity. Left is the reference, and right is the generated result.
+                OmniDirector masters extreme, high-difficulty camera maneuvers that go far beyond conventional pans and tilts. It can soar into the sky and dive underground, executing breathtaking aerial fly-throughs and dramatic descents while faithfully preserving scene geometry and visual fidelity.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -357,7 +372,7 @@
         <section id="Multi-Shot-Top">
             <div class="title">Multi Shot</div>
             <div class="category-desc fade-in-element">
-                OmniDirector supports multi-shot generation with coherent transitions and consistent content, while faithfully replicating camera relationships and shot compositions to preserve the original visual language across shots. Left is the reference, and right is the generated result.
+                OmniDirector supports multi-shot generation with coherent transitions and consistent content, while faithfully replicating camera relationships and shot compositions to preserve the original visual language across shots.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -378,7 +393,7 @@
         <section id="Scene-Generalization-Top" style="margin-top: 100px;">
             <div class="title">Scene Generalization</div>
             <div class="category-desc fade-in-element">
-                OmniDirector demonstrates strong scene generalization, extending its capabilities across diverse domains including portraits, animals, wildlife, architecture, and AIGC content, ensuring robust performance without domain-specific constraints. Left is the reference, and right is the generated result.
+                OmniDirector demonstrates strong scene generalization, extending its capabilities across diverse domains including portraits, animals, wildlife, architecture, and AIGC content, ensuring robust performance without domain-specific constraints.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -399,7 +414,7 @@
         <section id="Special-Camera-Movement-Top">
             <div class="title">Special Camera Movement</div>
             <div class="category-desc fade-in-element">
-                OmniDirector supports special camera techniques, including the Hitchcock zoom (dolly zoom), bullet time, and lens distortion effects. Left is the reference, and right is the generated result.
+                OmniDirector supports special camera techniques, including the Hitchcock zoom (dolly zoom), bullet time, and lens distortion effects.
             </div>
             
             <div class="carousel-container fade-in-element">
@@ -426,9 +441,6 @@
 
         <section id="Dynamic-Motion-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Dynamic Motion</div>
-            <div class="category-desc fade-in-element" style="padding: 10px 20px; font-size: 1.05rem; margin-bottom: 20px;">
-                Left is the reference, and right is the generated result.
-            </div>
             <div class="peek-container">
                 <div class="staggered-grid">
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_29.mp4"></video></div></div>
@@ -441,7 +453,7 @@
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_12%20%281%29.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_21%20%281%29.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_28.mp4"></video></div></div>
-                    <div class="staggered-item fade-in-element force-right"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.mp4"></video></div></div>
+                    <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.jpg" data-src="camera/dynamic_motion/cameraMotionTransfer_one_shot_omini_33%20%281%29.mp4"></video></div></div>
                 </div>
                 <div class="peek-overlay"></div>
             </div>
@@ -452,9 +464,6 @@
 
         <section id="Multi-Shot-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Multi Shot</div>
-            <div class="category-desc fade-in-element" style="padding: 10px 20px; font-size: 1.05rem; margin-bottom: 20px;">
-                Left is the reference, and right is the generated result.
-            </div>
             <div class="peek-container">
                 <div class="staggered-grid">
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot44%20%281%29.mp4"></video></div></div>
@@ -473,7 +482,7 @@
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot36%20%282%29.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_1%20%281%29.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_13%20%281%29.mp4"></video></div></div>
-                    <div class="staggered-item fade-in-element force-right"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.mp4"></video></div></div>
+                    <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.jpg" data-src="camera/multi_shot/cameraMotionTransfer_multi_shot_hard_56.mp4"></video></div></div>
                 </div>
                 <div class="peek-overlay"></div>
             </div>
@@ -484,13 +493,9 @@
 
         <section id="Scene-Generalization-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Scene Generalization</div>
-            <div class="category-desc fade-in-element" style="padding: 10px 20px; font-size: 1.05rem; margin-bottom: 20px;">
-                Left is the reference, and right is the generated result.
-            </div>
             <div class="peek-container">
                 <div class="staggered-grid">
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot193.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot193.mp4"></video></div></div>
-                    <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot494.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot295.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot295.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot313.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot313.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot393.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot393.mp4"></video></div></div>
@@ -505,6 +510,7 @@
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot258.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot258.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot307.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot307.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot343.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot343.mp4"></video></div></div>
+                    <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot494.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot494.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_65.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_263.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_308.mp4"></video></div></div>
@@ -519,7 +525,7 @@
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_hard_7%20%281%29.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_284.mp4"></video></div></div>
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new_8.mp4"></video></div></div>
-                    <div class="staggered-item fade-in-element force-right"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video></div></div>
+                    <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.jpg" data-src="camera/scene_generalization/cameraMotionTransfer_one_shot_omini_new__295.mp4"></video></div></div>
                 </div>
                 <div class="peek-overlay"></div>
             </div>
@@ -530,9 +536,6 @@
         
         <section id="Special-Camera-Movement-More">
             <div class="title" style="font-size: 24px; color: #ccc;">More: Special Camera Movement</div>
-            <div class="category-desc fade-in-element" style="padding: 10px 20px; font-size: 1.05rem; margin-bottom: 20px;">
-                Left is the reference, and right is the generated result.
-            </div>
             <div class="peek-container">
                 <div class="staggered-grid">
                     <div class="staggered-item fade-in-element"><div class="prompt-wrap audio-control"><video playsinline controls loop preload="none" data-poster="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.jpg" data-src="camera/special_camera_movement/cameraMotionTransfer_one_shot_omini_new_299.mp4"></video></div></div>
@@ -559,10 +562,12 @@
     <section id="Comparisons-More" style="margin-bottom: 80px;">
         <div class="title" style="font-size: 24px; color: #ccc;">More: Comparisons</div>
         <div class="category-desc fade-in-element">
-            Side-by-side performance comparison against other state-of-the-art camera control methods, where the leftmost column shows the reference images. OmniDirector exhibits superior control stability and minimal object distortion. Left is the reference, and right is the generated result.
-        </div>
+            Side-by-side performance comparison against other state-of-the-art camera control methods, where the leftmost column shows the reference images. OmniDirector exhibits superior control stability and minimal object distortion.        </div>
         <div class="carousel-container fade-in-element">
             <div class="carousel-arrow left-arrow"><i class="fas fa-chevron-left"></i></div>
+            <div class="carousel-item">
+                <video playsinline controls loop preload="none" data-poster="image/1.jpg" data-src="camera/compare/1.mp4"></video>
+            </div>
             <div class="carousel-item">
                 <video playsinline controls loop preload="none" data-poster="image/2.jpg" data-src="camera/compare/2.mp4"></video>
             </div>
@@ -571,9 +576,6 @@
             </div>
             <div class="carousel-item">
                 <video playsinline controls loop preload="none" data-poster="image/4.jpg" data-src="camera/compare/4.mp4"></video>
-            </div>
-            <div class="carousel-item">
-                <video playsinline controls loop preload="none" data-poster="image/1.jpg" data-src="camera/compare/1.mp4"></video>
             </div>
             <div class="carousel-arrow right-arrow"><i class="fas fa-chevron-right"></i></div>
         </div>
@@ -622,19 +624,19 @@
     </div>
 
     <script>
-        // const overlay = document.getElementById('password-overlay');
-        // const passInput = document.getElementById('password-input');
-        // const passSubmit = document.getElementById('password-submit');
-        // const passError = document.getElementById('password-error');
-        // function checkPassword() {
-        //     if (passInput.value === '1') { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; } 
-        //     else { passError.style.display = 'block'; }
-        // }
-        // if (overlay) {
-        //     passSubmit.addEventListener('click', checkPassword);
-        //     passInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') checkPassword(); });
-        //     document.body.style.overflow = 'hidden';
-        // }
+        const overlay = document.getElementById('password-overlay');
+        const passInput = document.getElementById('password-input');
+        const passSubmit = document.getElementById('password-submit');
+        const passError = document.getElementById('password-error');
+        function checkPassword() {
+            if (passInput.value === '1') { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; } 
+            else { passError.style.display = 'block'; }
+        }
+        if (overlay) {
+            passSubmit.addEventListener('click', checkPassword);
+            passInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') checkPassword(); });
+            document.body.style.overflow = 'hidden';
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -730,52 +732,6 @@
                 applyStates();
             });
 
-            /* ---------------------------------------------------- */
-            /* 2.5 全新定制：严格左右排布按高度分配的 JS 瀑布流（支持手动强制左右） */
-            /* ---------------------------------------------------- */
-            document.querySelectorAll('.staggered-grid').forEach(grid => {
-                const items = Array.from(grid.querySelectorAll('.staggered-item'));
-                
-                const leftCol = document.createElement('div');
-                leftCol.className = 'masonry-col left-col';
-                const rightCol = document.createElement('div');
-                rightCol.className = 'masonry-col right-col';
-                
-                grid.innerHTML = '';
-                grid.appendChild(leftCol);
-                grid.appendChild(rightCol);
-
-                items.forEach((item) => {
-                    // --- 新增：手动强制分配逻辑 ---
-                    if (item.classList.contains('force-left')) {
-                        leftCol.appendChild(item);
-                        return; // 跳过后续自动平衡逻辑
-                    }
-                    if (item.classList.contains('force-right')) {
-                        rightCol.appendChild(item);
-                        return; // 跳过后续自动平衡逻辑
-                    }
-                    // --------------------------
-
-                    let lh = leftCol.offsetHeight;
-                    let rh = rightCol.offsetHeight;
-                    let lc = leftCol.children.length;
-                    let rc = rightCol.children.length;
-
-                    // 原有的自动平衡逻辑
-                    if (lc === rc) {
-                        if (lh <= rh) {
-                            leftCol.appendChild(item);
-                        } else {
-                            rightCol.appendChild(item);
-                        }
-                    } else if (lc < rc) {
-                        leftCol.appendChild(item);
-                    } else {
-                        rightCol.appendChild(item);
-                    }
-                });
-            });
 
             /* ---------------------------------------------------- */
             /* 3. 【极客级核心】带局部性空间缓存预测的单例按需加载  */
@@ -831,7 +787,7 @@
                 }
             }
 
-            // 核心算法：加载该视频下面的视频，如果加载到最后一个，则从头开始加载之前的视频，直到全部加载完毕
+            // 根据当前正在观看的视频，算出页面距离它“最近”的兄弟视频优先预加载
             function startPreloading(centerVideo) {
                 abortPreloading();
                 window.preloadController = new AbortController();
@@ -842,23 +798,18 @@
                 
                 if (centerIndex === -1) return;
 
-                const orderedVideos = [];
-                // 1. 从当前视频的下一个开始，一直到末尾
-                for (let i = centerIndex + 1; i < allVideos.length; i++) {
-                    orderedVideos.push(allVideos[i]);
-                }
-                // 2. 到达末尾后折返回开头，加载当前视频前面的所有视频
-                for (let i = 0; i < centerIndex; i++) {
-                    orderedVideos.push(allVideos[i]);
-                }
-
-                // 筛选掉已经拥有 src 或者已经被转化为本地 blob、已被缓存的视频
-                window.preloadQueue = orderedVideos.filter(v => 
-                    !v.getAttribute('src') && !v.dataset.src.startsWith('blob:') && !window.preloadedUrls.has(v.dataset.src)
-                );
+                // 核心算法：算出全屏所有视频的距离，越近的越先进入队列
+                window.preloadQueue = allVideos
+                    .filter(v => v !== centerVideo && !v.getAttribute('src') && !v.dataset.src.startsWith('blob:'))
+                    .sort((a, b) => {
+                        const distA = Math.abs(allVideos.indexOf(a) - centerIndex);
+                        const distB = Math.abs(allVideos.indexOf(b) - centerIndex);
+                        return distA - distB; 
+                    });
 
                 processNextPreload();
             }
+
 
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -912,7 +863,7 @@
                                     
                                     window.activeVideo = video;
 
-                                    // 【改动点2】当当前视频在底层加载出足够数据可以连续播放后，触发顺位视频的静默预加载
+                                    // 【改动点2】当当前视频在底层加载出足够数据可以连续播放后，触发周边视频的静默预加载
                                     const checkAndPreload = () => {
                                         if (window.activeVideo === video) {
                                             startPreloading(video);
@@ -950,14 +901,11 @@
                     const container = wrapper.previousElementSibling; 
                     
                     let currentHeight = parseInt(window.getComputedStyle(container).maxHeight);
-                    let newHeight = currentHeight + 490; 
+                    let newHeight = currentHeight + 590; 
                     
                     container.style.maxHeight = newHeight + "px";
-                    
-                    // 如果已经撑到最大高度了，或者接近最大高度了
-                    if (newHeight >= (container.scrollHeight - 100)) {
-                        // 【关键修改】直接设为 none，彻底解除高度封印，这样就不会切掉视频了
-                        container.style.maxHeight = "none"; 
+
+                    if (newHeight >= container.scrollHeight) {
                         container.classList.add('fully-expanded'); 
                         wrapper.style.display = 'none'; 
                     }
